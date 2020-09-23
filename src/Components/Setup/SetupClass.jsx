@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {Component} from 'react';
 import { Dropdown, Grid, Input, Segment } from 'semantic-ui-react';
 
 
@@ -171,59 +171,75 @@ const diceNumOptions = [
   },
 ]
 
-const Setup = () => {
-
-  const [playerCount, setPlayerCount] = useState(2),
-        [playerOne, setPlayerOne] = useState({name: '', diceNum: 0, diceColor:''}),
-        [playerTwo, setPlayerTwo] = useState({name: '', diceNum: 0, diceColor:''}),
-        [playerThree, setPlayerThree] = useState({name: '', diceNum: 0, diceColor:''}),
-        [playerFour, setPlayerFour] = useState({name: '', diceNum: 0, diceColor:''});
+class SetupClass extends Component{
+  constructor(props){
+    super(props);
+    
+    this.state= {
+      playerCount: 2,
+      playerOne: {
+        name: '',
+        diceNum: 0,
+        diceColor: ''
+      },
+      playerTwo: {
+        name: '',
+        diceNum: 0,
+        diceColor: ''
+      },
+      playerThree: {
+        name: '',
+        diceNum: 0,
+        diceColor: ''
+      },
+      playerFour: {
+        name: '',
+        diceNum: 0,
+        diceColor: ''
+      }
+    }
+    
+  }
   
-  useEffect(() => {
-    console.log(playerCount, playerOne, playerTwo, playerThree, playerFour)
-    
-  })
   
-  const handlePlayerCount = (e, {value}) => {
-    setPlayerCount(value);
-    // console.log(playerCount)
+  handlePlayerCount = (e, {value}) => {
+    this.setState({playerCount: value});
+    // console.log(this.playerCount)
   }
 
   
-  const onInputChangeOne = (e, result) => {
-    const {name, value} = result || e.target;
-    setPlayerOne({...playerOne, [name]: value});
+   onInputChangeOneDice = (e, {value}) => {
+    this.setState({playerOne:{diceNum: value}})
     
-    console.log(playerOne)
+    console.log(this.playerOne)
   }
 
-  const onInputChangeTwo = (e, result) => {
-    const {name, value} = result || e.target;
-    setPlayerTwo({...playerTwo, [name]: value});
+   onInputChangeTwo = (e) => {
+    this.setState({playerOne:{[e.target.name]: e.target.value}})
     
     
-    console.log(playerTwo)
+    
+    // console.log(playerTwo)
   }
 
-  const onInputChangeThree = (e, result) => {
-    const {name, value} = result || e.target;
-    
-    setPlayerThree({...playerThree, [name]: value});
+   onInputChangeThree = (e) => {
+    this.setState({playerOne:{[e.target.name]: e.target.value}})
     
     
-    console.log(playerThree)
+    
+    // console.log(playerThree)
   }
 
-  const onInputChangeFour = (e, result) => {
-    const {name, value} = result || e.target;
+   onInputChangeFour = (e) => {
+    this.setState({playerOne:{[e.target.name]: e.target.value}})
     
-    setPlayerFour({...playerFour, [name]: value});
     
-    console.log(playerFour)
+    // console.log(playerFour)
   }
 
   // const handleChange = (e, {value}) => setPlayerOne({diceColor: value})
-
+  render(){
+    let {playerOne, playerTwo, playerThree, playerFour, playerCount} = this.state;
   return(
     <div>
       <Dropdown
@@ -231,20 +247,21 @@ const Setup = () => {
       fluid
       selection
       options={playerCountOptions}
-      onChange = {handlePlayerCount}
+      value={playerCount}
+      onChange = {this.handlePlayerCount}
       />
       <Grid stackable columns={2}>
           <Grid.Row>
               <Grid.Column>
               <Segment>
               <h3>Player 1</h3>
-              <Input onChange={(e) => onInputChangeOne(e)} placeholder='enter player name' name='name' value={playerOne.name}/>
+              <Input onChange={(e) => this.onInputChangeOne(e)} placeholder='enter player name' name='name' value={playerOne.name}/>
               
               <Dropdown
               placeholder='number of dice'
               name='diceNum'
               value={playerOne.diceNum}
-              onChange={onInputChangeOne}
+              onChange={this.onInputChangeOne}
               fluid
               selection
               options={diceNumOptions}
@@ -253,7 +270,7 @@ const Setup = () => {
               placeholder='order dice color'
               name='diceColor'
               value={playerOne.diceColor}
-              onChange={onInputChangeOne}
+              onChange={this.onInputChangeOne}
               fluid
               selection
               options={diceColorOptions}
@@ -264,12 +281,12 @@ const Setup = () => {
               <Grid.Column>
               <Segment>
               <h3>Player 2</h3>
-              <Input onChange={(e) => onInputChangeTwo(e)} placeholder='enter player name' name='name' value={playerTwo.name}/>
+              <Input onChange={(e) => this.onInputChangeTwo(e)} placeholder='enter player name' name='name' value={playerTwo.name}/>
               <Dropdown
               placeholder='number of dice'
               name='diceNum'
               value={playerTwo.diceNum}
-              onChange={onInputChangeTwo}
+              onChange={this.onInputChangeTwo}
               fluid
               selection
               options={diceNumOptions}
@@ -278,7 +295,7 @@ const Setup = () => {
               placeholder='order dice color'
               name='diceColor'
               value={playerTwo.diceColor}
-              onChange={onInputChangeTwo}
+              onChange={this.onInputChangeTwo}
               fluid
               selection
               options={diceColorOptions}
@@ -291,12 +308,12 @@ const Setup = () => {
               <Grid.Column>
                 <Segment>
                 <h3>Player 3</h3>
-                <Input onChange={(e) => onInputChangeThree(e)} placeholder='enter player name' name='name' value={playerThree.name}/>
+                <Input onChange={(e) => this.onInputChangeThree(e)} placeholder='enter player name' name='name' value={playerThree.name}/>
                 <Dropdown
                 placeholder='number of dice'
                 name='diceNum'
                 value={playerThree.diceNum}
-                onChange={onInputChangeThree}
+                onChange={this.onInputChangeThree}
                 fluid
                 selection
                 options={diceNumOptions}
@@ -305,7 +322,7 @@ const Setup = () => {
                 placeholder='order dice color'
                 name='diceColor'
                 value={playerThree.diceColor}
-                onChange={onInputChangeThree}
+                onChange={this.onInputChangeThree}
                 fluid
                 selection
                 options={diceColorOptions}
@@ -319,12 +336,12 @@ const Setup = () => {
               <Grid.Column>
               <Segment>
               <h3>Player 4</h3>
-              <Input onChange={(e) => onInputChangeFour(e)} placeholder='enter player name' name='name' value={playerFour.name}/>
+              <Input onChange={(e) => this.onInputChangeFour(e)} placeholder='enter player name' name='name' value={playerFour.name}/>
               <Dropdown
               placeholder='number of dice'
               name='diceNum'
               value={playerFour.diceNum}
-              onChange={onInputChangeFour}
+              onChange={this.onInputChangeFour}
               fluid
               selection
               options={diceNumOptions}
@@ -333,7 +350,7 @@ const Setup = () => {
               placeholder='order dice color'
               name='diceColor'
               value={playerFour.diceColor}
-              onChange={onInputChangeFour}
+              onChange={this.onInputChangeFour}
               fluid
               selection
               options={diceColorOptions}
@@ -346,5 +363,6 @@ const Setup = () => {
     </div>
   )
 }
+}
 
-export default Setup;
+export default SetupClass;
