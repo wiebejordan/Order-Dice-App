@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Dropdown, Grid, Input, Segment } from 'semantic-ui-react';
+import Dashboard from '../Dashboard/Dashboard'
 
 
 const playerCountOptions = [
@@ -180,13 +181,13 @@ const Setup = () => {
         [playerFour, setPlayerFour] = useState({name: '', diceNum: 0, diceColor:''});
   
   useEffect(() => {
-    console.log(playerCount, playerOne, playerTwo, playerThree, playerFour)
+    console.log(playerOne.diceNum)
     
   })
   
   const handlePlayerCount = (e, {value}) => {
     setPlayerCount(value);
-    // console.log(playerCount)
+    
   }
 
   
@@ -194,7 +195,7 @@ const Setup = () => {
     const {name, value} = result || e.target;
     setPlayerOne({...playerOne, [name]: value});
     
-    console.log(playerOne)
+    
   }
 
   const onInputChangeTwo = (e, result) => {
@@ -202,7 +203,7 @@ const Setup = () => {
     setPlayerTwo({...playerTwo, [name]: value});
     
     
-    console.log(playerTwo)
+    
   }
 
   const onInputChangeThree = (e, result) => {
@@ -211,7 +212,7 @@ const Setup = () => {
     setPlayerThree({...playerThree, [name]: value});
     
     
-    console.log(playerThree)
+    
   }
 
   const onInputChangeFour = (e, result) => {
@@ -219,10 +220,10 @@ const Setup = () => {
     
     setPlayerFour({...playerFour, [name]: value});
     
-    console.log(playerFour)
+    
   }
 
-  // const handleChange = (e, {value}) => setPlayerOne({diceColor: value})
+  
 
   return(
     <div>
@@ -343,6 +344,7 @@ const Setup = () => {
               :null}
           </Grid.Row>
       </Grid>
+          <Dashboard playerOne={playerOne} playerTwo={playerTwo} playerThree={playerThree} playerFour={playerFour}/>
     </div>
   )
 }
