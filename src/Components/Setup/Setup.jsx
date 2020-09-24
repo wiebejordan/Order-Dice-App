@@ -363,10 +363,10 @@ const Setup = () => {
           {playerOne.name && playerOne.diceNum > 0 && playerOne.diceColor && playerTwo.name && playerTwo.diceNum > 0 && playerTwo.diceColor ? <Button onClick={handleStartGame}>Start Game</Button> : null}
           
 
-          {/* {startGame === false ? null 
-          : */}
+          {startGame === false ? null 
+          :
         <Dashboard playerOne={playerOne} playerTwo={playerTwo} playerThree={playerThree} playerFour={playerFour}/>
-        {/* } */}
+          }
 
     </div>
   )
