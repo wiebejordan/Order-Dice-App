@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Dropdown, Grid, Input, Segment } from 'semantic-ui-react';
+import { Dropdown, Grid, Input, Segment, Button } from 'semantic-ui-react';
 import Dashboard from '../Dashboard/Dashboard'
 
 
@@ -178,7 +178,8 @@ const Setup = () => {
         [playerOne, setPlayerOne] = useState({name: '', diceNum: 0, diceColor:''}),
         [playerTwo, setPlayerTwo] = useState({name: '', diceNum: 0, diceColor:''}),
         [playerThree, setPlayerThree] = useState({name: '', diceNum: 0, diceColor:''}),
-        [playerFour, setPlayerFour] = useState({name: '', diceNum: 0, diceColor:''});
+        [playerFour, setPlayerFour] = useState({name: '', diceNum: 0, diceColor:''}),
+        [startGame, setStartGame] = useState(false)
   
   useEffect(() => {
     console.log(playerOne.diceNum)
@@ -193,6 +194,7 @@ const Setup = () => {
   
   const onInputChangeOne = (e, result) => {
     const {name, value} = result || e.target;
+
     setPlayerOne({...playerOne, [name]: value});
     
     
@@ -223,17 +225,29 @@ const Setup = () => {
     
   }
 
+  const handleStartGame = () => {
+    if(startGame === false){
+    setStartGame(true)
+    }
+    else if(startGame === true){
+      setStartGame(false)
+    }
+  }
+
   
 
   return(
     <div>
+      {startGame === false ?  
       <Dropdown
       placeholder='Select number of players'
       fluid
       selection
       options={playerCountOptions}
       onChange = {handlePlayerCount}
-      />
+      />:null}
+
+      {startGame === false ? 
       <Grid stackable columns={2}>
           <Grid.Row>
               <Grid.Column>
@@ -343,8 +357,17 @@ const Setup = () => {
               </Grid.Column>
               :null}
           </Grid.Row>
-      </Grid>
-          <Dashboard playerOne={playerOne} playerTwo={playerTwo} playerThree={playerThree} playerFour={playerFour}/>
+      </Grid>:null}
+
+          
+          {playerOne.name && playerOne.diceNum > 0 && playerOne.diceColor && playerTwo.name && playerTwo.diceNum > 0 && playerTwo.diceColor ? <Button onClick={handleStartGame}>Start Game</Button> : null}
+          
+
+          {/* {startGame === false ? null 
+          : */}
+        <Dashboard playerOne={playerOne} playerTwo={playerTwo} playerThree={playerThree} playerFour={playerFour}/>
+        {/* } */}
+
     </div>
   )
 }
