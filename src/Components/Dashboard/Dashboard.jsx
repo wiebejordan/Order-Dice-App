@@ -9,7 +9,8 @@ class Dashboard extends Component {
       totalDice: 0,
       diceBag: [],
       diceRemaining: 0,
-      pulledDice: '' 
+      pulledDice: '',
+      randomNum: 0 
     }
   }
 
@@ -49,30 +50,39 @@ handleDiceTotal = (props) => {
 handleDiceDraw = (props) => {
   const {diceBag} = this.state;
   const {playerOne, playerTwo} = this.props;
-  let random = Math.ceil(Math.random() * this.state.totalDice -1);
+  let length = diceBag.length - 1 ;
 
+  let random = Math.floor(Math.random() * length);
+  let lastTwo = Math.floor(Math.random() * 2);
 
-  for(let i=0; i < diceBag.length; i++){
-    let pulledDice = diceBag.slice(diceBag[random], diceBag[random] + 1);
-    this.setState({pulledDice: diceBag[random] })
+  
+  let pulledDice = diceBag.splice(random, 1);
+  
+  
+  this.setState({pulledDice: pulledDice, randomNum: random})
+ 
+  
     
-  }
+  
+  
   console.log(random)
-  console.log(this.state.diceBag)
+  console.log(length)
+  
   
 }
 
 
 render(){
-  
+  console.log(this.state.diceBag)
   console.log(this.state.pulledDice)
+  console.log(this.state.randomNum)
   return(
     <div>
       Dashboard
     <h3>{this.props.playerOne.name} dice: {this.props.playerOne.diceNum}</h3>
     <h3>{this.props.playerTwo.name} dice: {this.props.playerTwo.diceNum}</h3>
     <h3>{this.state.pulledDice}</h3>
-
+    
     <Button onClick={this.handleDiceDraw}>Draw Dice</Button>
     </div>
   )
