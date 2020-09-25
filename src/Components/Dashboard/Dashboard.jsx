@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Button} from 'semantic-ui-react';
+import {Button, Grid} from 'semantic-ui-react';
+import '../Dashboard/Dashboard.css'
 
 class Dashboard extends Component {
   constructor(props){
@@ -10,7 +11,8 @@ class Dashboard extends Component {
       diceBag: [],
       diceRemaining: 0,
       pulledDice: '',
-      randomNum: 0 
+      turnNum: 1
+      
     }
   }
 
@@ -51,40 +53,55 @@ handleDiceDraw = (props) => {
   const {diceBag} = this.state;
   const {playerOne, playerTwo} = this.props;
   let length = diceBag.length - 1 ;
-
   let random = Math.floor(Math.random() * length);
-  let lastTwo = Math.floor(Math.random() * 2);
-
   
   let pulledDice = diceBag.splice(random, 1);
-  
-  
-  this.setState({pulledDice: pulledDice, randomNum: random})
- 
-  
+  this.setState({pulledDice: pulledDice})
     
-  
-  
-  console.log(random)
-  console.log(length)
-  
-  
+}
+
+handleNextTurn = () => {
+  this.setState({
+    turnNum: this.state.turnNum + 1,
+    pulledDice: ''
+  })
+  this.handleDiceTotal()
 }
 
 
 render(){
   console.log(this.state.diceBag)
   console.log(this.state.pulledDice)
-  console.log(this.state.randomNum)
+  
   return(
     <div>
-      Dashboard
+      
     <h3>{this.props.playerOne.name} dice: {this.props.playerOne.diceNum}</h3>
     <h3>{this.props.playerTwo.name} dice: {this.props.playerTwo.diceNum}</h3>
-    <h3>{this.state.pulledDice}</h3>
+
+    <div className='dice-container'>
+    <div className='dice' style={{
+      backgroundColor: `${this.state.pulledDice}`,
+      height: '100px',
+      width: '100px',
+      }}>
+      <p>{this.state.pulledDice}</p>
+      </div>
+      </div>
+    <h1>turn: {this.state.turnNum}</h1>
     
+    
+    {this.state.diceBag < 1 ? null : 
     <Button onClick={this.handleDiceDraw}>Draw Dice</Button>
+    }
+
+    {this.state.diceBag < 1 ? <Button color='blue' onClick={this.handleNextTurn}>Next Turn</Button> : null
+    }
+
+    
     </div>
+
+    
   )
 }
 

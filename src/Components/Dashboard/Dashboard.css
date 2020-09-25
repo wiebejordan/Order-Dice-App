@@ -1,0 +1,11 @@
+.dice-container{
+  display: flex;
+  justify-content: center;
+  color: white;
+}
+
+.dice{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
