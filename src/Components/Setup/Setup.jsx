@@ -23,9 +23,9 @@ const playerCountOptions = [
 
 const diceColorOptions = [
   {
-    key: 'green',
-    text: 'green',
-    value: 'green'
+    key: 'black',
+    text: 'black',
+    value: 'black'
   },
   {
     key: 'grey',
@@ -33,9 +33,9 @@ const diceColorOptions = [
     value: 'grey'
   },
   {
-    key: 'white',
-    text: 'white',
-    value: 'white'
+    key: 'olive',
+    text: 'olive',
+    value: 'olive'
   },
   {
     key: 'orange',
@@ -175,11 +175,12 @@ const diceNumOptions = [
 const Setup = () => {
 
   const [playerCount, setPlayerCount] = useState(2),
-        [playerOne, setPlayerOne] = useState({name: 'Player One', diceNum: 2, diceColor:'green'}),
-        [playerTwo, setPlayerTwo] = useState({name: 'Player Two', diceNum: 2, diceColor:'grey'}),
+        [playerOne, setPlayerOne] = useState({name: 'Player One', diceNum: 10, diceColor:'green'}),
+        [playerTwo, setPlayerTwo] = useState({name: 'Player Two', diceNum: 6, diceColor:'orange'}),
         [playerThree, setPlayerThree] = useState({name: '', diceNum: 0, diceColor:''}),
         [playerFour, setPlayerFour] = useState({name: '', diceNum: 0, diceColor:''}),
-        [startGame, setStartGame] = useState(false)
+        [startGame, setStartGame] = useState(false),
+        [hideStart, setHideStart] = useState(false)
   
   useEffect(() => {
     // console.log(playerOne.diceNum) 
@@ -227,7 +228,8 @@ const Setup = () => {
 
   const handleStartGame = () => {
     if(startGame === false){
-    setStartGame(true)
+    setStartGame(true);
+    setHideStart(true)
     }
     else if(startGame === true){
       setStartGame(false)
@@ -238,23 +240,24 @@ const Setup = () => {
 
   return(
     <div>
-      {startGame === false ?  
+      {/* {startGame === false ?  
       <Dropdown
       placeholder='Select number of players'
       fluid
       selection
       options={playerCountOptions}
       onChange = {handlePlayerCount}
-      />:null}
+      />:null} */}
 
-      {startGame === false ? 
+      {startGame === false  ? 
       <Grid stackable columns={2}>
           <Grid.Row>
               <Grid.Column>
               <Segment>
               <h3>Player 1</h3>
+              <h4 style={{margin: '0'}}>Player Name</h4>
               <Input onChange={(e) => onInputChangeOne(e)} placeholder='enter player name' name='name' value={playerOne.name}/>
-              
+              <h4 style={{margin: '0'}}>Number of Order Dice</h4>
               <Dropdown
               placeholder='number of dice'
               name='diceNum'
@@ -264,6 +267,7 @@ const Setup = () => {
               selection
               options={diceNumOptions}
               />
+              <h4 style={{margin: '0'}}>Order Dice Color</h4>
               <Dropdown
               placeholder='order dice color'
               name='diceColor'
@@ -279,7 +283,9 @@ const Setup = () => {
               <Grid.Column>
               <Segment>
               <h3>Player 2</h3>
+              <h4 style={{margin: '0'}}>Player Name</h4>
               <Input onChange={(e) => onInputChangeTwo(e)} placeholder='enter player name' name='name' value={playerTwo.name}/>
+              <h4 style={{margin: '0'}}>Number of Order Dice</h4>
               <Dropdown
               placeholder='number of dice'
               name='diceNum'
@@ -289,6 +295,7 @@ const Setup = () => {
               selection
               options={diceNumOptions}
               />
+              <h4 style={{margin: '0'}}>Order Dice Color</h4>
               <Dropdown
               placeholder='order dice color'
               name='diceColor'
@@ -360,7 +367,7 @@ const Setup = () => {
       </Grid>:null}
 
           
-          {playerOne.name && playerOne.diceNum > 0 && playerOne.diceColor && playerTwo.name && playerTwo.diceNum > 0 && playerTwo.diceColor ? <Button onClick={handleStartGame}>Start Game</Button> : null}
+          {playerOne.name && playerOne.diceNum > 0 && playerOne.diceColor && playerTwo.name && playerTwo.diceNum > 0 && playerTwo.diceColor && hideStart === false ? <Button onClick={handleStartGame}>Start Game</Button> : null}
           
 
           {startGame === false ? null 

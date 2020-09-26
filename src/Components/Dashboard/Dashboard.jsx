@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Grid} from 'semantic-ui-react';
+import {Button, Grid, Modal, Image, Header, Segment} from 'semantic-ui-react';
 import '../Dashboard/Dashboard.css'
 
 class Dashboard extends Component {
@@ -15,8 +15,8 @@ class Dashboard extends Component {
       playerOneTotalDice: this.props.playerOne.diceNum,
       playerOneRemainingDice: this.props.playerOne.diceNum, 
       playerTwoTotalDice: this.props.playerTwo.diceNum,
-      playerTwoRemainingDice: this.props.playerTwo.diceNum
-      
+      playerTwoRemainingDice: this.props.playerTwo.diceNum,
+      gameOver: false
     }
   }
 
@@ -45,10 +45,10 @@ handleDiceTotal = (props) => {
 
 
   this.setState({totalDice: totalDice, diceRemaining: totalDice})
-  // this.setState({
-  //   playerOneTotalDice: this.props.playerOne.diceNum,
-  //   playerTwoTotalDice: this.props.playerTwo.diceNum
-  // })
+  
+  if(this.state.playerOneTotalDice === 0 || this.state.playerTwoTotalDice === 0){
+    this.setState({gameOver: true})
+  }
   
 }
 
@@ -145,20 +145,40 @@ handleNextTurn = () => {
   this.handleDiceTotal()
 }
 
+handleGameOver = () => {
+  if(this.state.playerOneTotalDice === 0 || this.state.playerTwoTotalDice === 0){
+    this.setState({gameOver: true})
+  }
+}
 
 render(){
   console.log(this.state.diceBag)
   console.log(this.state.pulledDice)
-  console.log(this.state.playerOneRemainingDice)
+  console.log(this.state.gameOver)
   
   return(
     <div>
+      <Segment.Group horizontal>
+        <Segment>
+          <h5 style={{margin: '0'}}>{this.props.playerOne.name} total units:  </h5>  
+          <h2 style={{margin: '0'}}>{this.state.playerOneTotalDice}</h2>
+        </Segment>
+        <Segment>
+          <h5 style={{margin: '0'}}>{this.props.playerOne.name} dice in bag:</h5>
+          <h2 style={{margin: '0'}}>{this.state.playerOneRemainingDice}</h2>
+        </Segment>
+      </Segment.Group>
 
-    <h3>P1 units: {this.state.playerOneTotalDice} </h3>  
-    <h3>{this.props.playerOne.name} dice in bag: {this.state.playerOneRemainingDice}</h3>
-    <h3>P2 units: {this.state.playerTwoTotalDice} </h3> 
-    <h3>{this.props.playerTwo.name} dice in bag: {this.state.playerTwoRemainingDice}</h3>
-    
+      <Segment.Group horizontal>
+      <Segment>
+          <h5 style={{margin: '0'}}>{this.props.playerTwo.name} total units:  </h5>  
+          <h2 style={{margin: '0'}}>{this.state.playerTwoTotalDice}</h2>
+        </Segment>
+        <Segment>
+          <h5 style={{margin: '0'}}>{this.props.playerTwo.name} dice in bag:</h5>
+          <h2 style={{margin: '0'}}>{this.state.playerTwoRemainingDice}</h2>
+        </Segment>
+      </Segment.Group>
 
     <div className='dice-container'>
     <div className='dice' style={{
@@ -169,22 +189,40 @@ render(){
       <p>{this.state.pulledDice}</p>
       </div>
       </div>
-    <h1>turn: {this.state.turnNum}</h1>
+    <Header>turn: {this.state.turnNum}</Header>
     
-    
+    <Grid stackable centered>
+      <Grid.Row columns={1}>
     {this.state.diceBag < 1 ? null : 
-    <Button onClick={this.handleDiceDraw}>Draw Dice</Button>
+    <Button size='huge' onClick={this.handleDiceDraw}>Draw Dice!</Button>
     }
-
     {this.state.diceBag < 1 ? <Button color='blue' onClick={this.handleNextTurn}>Next Turn</Button> : null
     }
-    <Button onClick={this.handleRemoveP1Dice}> P1 Ambush/Down</Button>
-    <Button onClick={this.handleRemoveP2Dice}>P2 Ambush/Down</Button>
-    <Button onClick={this.handleP1DiBDestroyed}>P1 Dice in Bag Destroyed</Button>
-    <Button onClick={this.handleP1DoTDestroyed}>P1 Dice on table Destroyed</Button>
-    <Button onClick={this.handleP2DiBDestroyed}>P2 Dice in Bag Destroyed</Button>
-    <Button onClick={this.handleP2DoTDestroyed}>P2 Dice on table Destroyed</Button>
+      </Grid.Row>
+    <Button.Group vertical>
+    <Button size='big'  color={this.props.playerOne.diceColor} onClick={this.handleRemoveP1Dice}> P1 Ambush/Down</Button>
+    <Button size='big' color={this.props.playerOne.diceColor} onClick={this.handleP1DiBDestroyed}>P1 Dice in Bag Destroyed</Button>
+    <Button size='big' color={this.props.playerOne.diceColor} onClick={this.handleP1DoTDestroyed}>P1 Dice on table Destroyed</Button>
+    </Button.Group>
 
+    <Button.Group vertical>
+    <Button size='big' color={this.props.playerTwo.diceColor} onClick={this.handleRemoveP2Dice}>P2 Ambush/Down</Button>
+    <Button size='big' color={this.props.playerTwo.diceColor} onClick={this.handleP2DiBDestroyed}>P2 Dice in Bag Destroyed</Button>
+    <Button size='big' color={this.props.playerTwo.diceColor} onClick={this.handleP2DoTDestroyed}>P2 Dice on table Destroyed</Button>
+    </Button.Group>
+    
+    </Grid>
+
+    <Modal open={this.state.gameOver === true}>
+      <Modal.Content>
+        
+        <Modal.Description >
+          <Header>Game Over!</Header>
+          
+        </Modal.Description>
+      </Modal.Content>
+    </Modal>
+    
     
     </div>
 
