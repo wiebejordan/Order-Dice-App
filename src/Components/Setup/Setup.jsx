@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Dropdown, Grid, Input, Segment, Button } from 'semantic-ui-react';
+import { Dropdown, Grid, Input, Segment, Button, Message } from 'semantic-ui-react';
 import Dashboard from '../Dashboard/Dashboard'
 
 
@@ -175,17 +175,28 @@ const diceNumOptions = [
 const Setup = () => {
 
   const [playerCount, setPlayerCount] = useState(2),
-        [playerOne, setPlayerOne] = useState({name: 'Player One', diceNum: 10, diceColor:'green'}),
-        [playerTwo, setPlayerTwo] = useState({name: 'Player Two', diceNum: 6, diceColor:'orange'}),
+        [playerOne, setPlayerOne] = useState({name: 'Jordo', diceNum: 10, diceColor:'green'}),
+        [playerTwo, setPlayerTwo] = useState({name: 'Wiebo', diceNum: 6, diceColor:'orange'}),
         [playerThree, setPlayerThree] = useState({name: '', diceNum: 0, diceColor:''}),
         [playerFour, setPlayerFour] = useState({name: '', diceNum: 0, diceColor:''}),
         [startGame, setStartGame] = useState(false),
-        [hideStart, setHideStart] = useState(false)
+        [hideStart, setHideStart] = useState(false),
+        [pOneError, setPOneError] = useState(false),
+        [pTwoError, setPTwoError] = useState(false)
   
   useEffect(() => {
-    // console.log(playerOne.diceNum) 
+    if(playerOne.name.length > 10){
+      setPOneError(true)
+    }else{setPOneError(false)}
+
+    if(playerTwo.name.length > 10){
+      setPTwoError(true)
+    }else{setPTwoError(false)}
+    console.log(playerTwo.name.length, pOneError) 
     
   })
+
+
   
   const handlePlayerCount = (e, {value}) => {
     setPlayerCount(value);
@@ -238,6 +249,8 @@ const Setup = () => {
 
   
 
+  
+
   return(
     <div>
       {/* {startGame === false ?  
@@ -257,6 +270,11 @@ const Setup = () => {
               <h3>Player 1</h3>
               <h4 style={{margin: '0'}}>Player Name</h4>
               <Input onChange={(e) => onInputChangeOne(e)} placeholder='enter player name' name='name' value={playerOne.name}/>
+              {pOneError === true 
+              ? <Message negative> 
+                <p>Name must be less than 10 characters</p>
+              </Message>
+              : null}
               <h4 style={{margin: '0'}}>Number of Order Dice</h4>
               <Dropdown
               placeholder='number of dice'
@@ -285,6 +303,11 @@ const Setup = () => {
               <h3>Player 2</h3>
               <h4 style={{margin: '0'}}>Player Name</h4>
               <Input onChange={(e) => onInputChangeTwo(e)} placeholder='enter player name' name='name' value={playerTwo.name}/>
+              {pTwoError === true 
+              ? <Message negative> 
+                <p>Name must be less than 10 characters</p>
+              </Message>
+              : null}
               <h4 style={{margin: '0'}}>Number of Order Dice</h4>
               <Dropdown
               placeholder='number of dice'
@@ -367,7 +390,7 @@ const Setup = () => {
       </Grid>:null}
 
           
-          {playerOne.name && playerOne.diceNum > 0 && playerOne.diceColor && playerTwo.name && playerTwo.diceNum > 0 && playerTwo.diceColor && hideStart === false ? <Button onClick={handleStartGame}>Start Game</Button> : null}
+          {playerOne.name && playerOne.diceNum > 0 && playerOne.diceColor && playerTwo.name && playerTwo.diceNum > 0 && playerTwo.diceColor && hideStart === false && pOneError === false && pTwoError === false ? <Button onClick={handleStartGame} style={{margin: '10px'}} size='huge'>Start Game</Button> : null}
           
 
           {startGame === false ? null 
