@@ -175,8 +175,8 @@ const diceNumOptions = [
 const Setup = () => {
 
   const [playerCount, setPlayerCount] = useState(2),
-        [playerOne, setPlayerOne] = useState({name: 'Jordo', diceNum: 10, diceColor:'green'}),
-        [playerTwo, setPlayerTwo] = useState({name: 'Wiebo', diceNum: 6, diceColor:'orange'}),
+        [playerOne, setPlayerOne] = useState({name: '', diceNum: null, diceColor:''}),
+        [playerTwo, setPlayerTwo] = useState({name: '', diceNum: null, diceColor:''}),
         [playerThree, setPlayerThree] = useState({name: '', diceNum: 0, diceColor:''}),
         [playerFour, setPlayerFour] = useState({name: '', diceNum: 0, diceColor:''}),
         [startGame, setStartGame] = useState(false),
