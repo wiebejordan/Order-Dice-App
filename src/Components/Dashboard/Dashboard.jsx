@@ -168,22 +168,32 @@ render(){
       <Segment.Group style={{margin: '0'}} horizontal>
         <Segment >
           <h5 style={{margin: '0'}}>{this.props.playerOne.name} total units:  </h5>  
-          <h2 style={{margin: '0'}}>{this.state.playerOneTotalDice}</h2>
+          <h1 style={{margin: '0'}}>{this.state.playerOneTotalDice}</h1>
         </Segment>
         <Segment>
           <h5 style={{margin: '0'}}>{this.props.playerOne.name} dice in bag:</h5>
-          <h2 style={{margin: '0'}}>{this.state.playerOneRemainingDice}</h2>
+          {this.state.playerOneRemainingDice
+          ?
+          <h1 style={{margin: '0'}}>{this.state.playerOneRemainingDice}</h1>
+          :
+          <h1 style={{margin: '0', color:'red'}}>{this.state.playerOneRemainingDice}</h1>
+          }
         </Segment>
       </Segment.Group>
 
       <Segment.Group style={{margin: '0'}} horizontal>
       <Segment>
           <h5 style={{margin: '0'}}>{this.props.playerTwo.name} total units:  </h5>  
-          <h2 style={{margin: '0'}}>{this.state.playerTwoTotalDice}</h2>
+          <h1 style={{margin: '0'}}>{this.state.playerTwoTotalDice}</h1>
         </Segment>
         <Segment>
           <h5 style={{margin: '0'}}>{this.props.playerTwo.name} dice in bag:</h5>
-          <h2 style={{margin: '0'}}>{this.state.playerTwoRemainingDice}</h2>
+          {this.state.playerTwoRemainingDice > 0
+          ?
+          <h1 style={{margin: '0'}}>{this.state.playerTwoRemainingDice}</h1>
+          :
+          <h1 style={{margin: '0', color: 'red'}}>{this.state.playerTwoRemainingDice}</h1>
+          }
         </Segment>
       </Segment.Group>
 
@@ -220,21 +230,21 @@ render(){
     <Grid stackable centered>
       <Grid.Row columns={1}>
     {this.state.diceBag < 1  ? null : 
-    <Button size='huge' onClick={this.handleDiceDraw}>Draw Dice!</Button>
+    <Button size='huge' color='teal' onClick={this.handleDiceDraw}>Draw Dice!</Button>
     }
     {this.state.diceBag < 1 ? <Button size='huge' color='blue' onClick={this.handleNextTurn}>Next Turn</Button> : null
     }
       </Grid.Row>
     <Button.Group vertical>
-    <Button style={{margin: '1px'}} size='big'  color={this.props.playerOne.diceColor} onClick={this.handleRemoveP1Dice}> P1 Ambush/Down</Button>
-    <Button style={{margin: '1px'}} size='big' color={this.props.playerOne.diceColor} onClick={this.handleP1DiBDestroyed}>P1 Dice in Bag Destroyed</Button>
-    <Button style={{margin: '1px'}} size='big' color={this.props.playerOne.diceColor} onClick={this.handleP1DoTDestroyed}>P1 Dice on table Destroyed</Button>
+    <Button style={{margin: '1px'}} size='big'  color={this.props.playerOne.diceColor} onClick={this.handleRemoveP1Dice}>  Ambush/Down</Button>
+    <Button style={{margin: '1px'}} size='big' color={this.props.playerOne.diceColor} onClick={this.handleP1DiBDestroyed}> Dice in Bag Destroyed</Button>
+    <Button style={{margin: '1px'}} size='big' color={this.props.playerOne.diceColor} onClick={this.handleP1DoTDestroyed}> Dice on table Destroyed</Button>
     </Button.Group>
 
     <Button.Group vertical>
-    <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleRemoveP2Dice}>P2 Ambush/Down</Button>
-    <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleP2DiBDestroyed}>P2 Dice in Bag Destroyed</Button>
-    <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleP2DoTDestroyed}>P2 Dice on table Destroyed</Button>
+    <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleRemoveP2Dice}> Ambush/Down</Button>
+    <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleP2DiBDestroyed}> Dice in Bag Destroyed</Button>
+    <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleP2DoTDestroyed}> Dice on table Destroyed</Button>
     </Button.Group>
     
     </Grid>

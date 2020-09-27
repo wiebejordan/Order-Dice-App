@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {Button, Container, Segment} from 'semantic-ui-react';
+import {Button, Container, Segment, Grid} from 'semantic-ui-react';
+import '../Landing/Landing.css'
 
 const Landing = () => {
   return(
@@ -8,15 +9,15 @@ const Landing = () => {
       <Container textAlign='center'>
         <Segment>
         <p style={{fontSize: '15px'}}>
-          Welcome to the ScaleHistorySLC Order Dice App for Bolt Action! This app makes playing Bolt Action, Warlords of Erewhon, Konflict 47 and other games that use the dice bag mechanic even more Covid-19 friendly! 
+          Welcome to the ScaleHistorySLC Order Dice App version 1.1 for Bolt Action! This app makes playing Bolt Action, Warlords of Erewhon, Konflict 47 and other games that use the dice bag mechanic even more Covid-19 friendly! 
         </p>
 
         <p style={{fontSize: '15px'}}>
-          Press the button below to get started!  
+          Press the green button to get started, or watch the how-to video below! 
         </p>
 
         <p style={{fontSize: '10px'}}>
-          Feel free to leave me feedback by emailing me at scaleHistoryslc@gmail.com   
+          Feel free to leave me feedback by emailing me at <b>scalehistoryslc@gmail.com </b>  
         </p>
 
         <p style={{fontSize: '10px'}}>
@@ -24,9 +25,18 @@ const Landing = () => {
         </p>
         </Segment>
       </Container>
+
+      <Container>
       <Link to='/setup'>
       <Button  size='huge' color='green' style={{margin: '10px'}}>Begin</Button>
       </Link>
+      </Container>
+      
+      
+
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/KvPY-QjK7rQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      
+      
     </div>
   )
 }
