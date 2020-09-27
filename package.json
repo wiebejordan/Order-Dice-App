@@ -2,7 +2,7 @@
   "name": "order-dice-app",
   "version": "0.1.0",
   "private": true,
-  "main": "server/index.jsx",
+  "main": "server/index.js",
   "proxy": "http://localhost:4000",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",

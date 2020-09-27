@@ -16,6 +16,10 @@ const Landing = () => {
         </p>
 
         <p style={{fontSize: '10px'}}>
+          Feel free to leave me feedback by emailing me at scaleHistoryslc@gmail.com   
+        </p>
+
+        <p style={{fontSize: '10px'}}>
           *Order Dice and the games mentioned above are owned by <a href='https://store.warlordgames.com/'>Warlord Games</a>  
         </p>
         </Segment>
