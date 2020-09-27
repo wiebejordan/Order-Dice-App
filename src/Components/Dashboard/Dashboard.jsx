@@ -33,7 +33,7 @@ componentDidMount = (props) => {
 
 
 handleDiceTotal = (props) => {
-  const {diceBag, playerOneTotalDice, playerTwoTotalDice, playerOneAmbushDice} = this.state;
+  const {diceBag, playerOneTotalDice, playerTwoTotalDice} = this.state;
   const {playerOne, playerTwo} = this.props;
 
   let totalDice = this.props.playerOne.diceNum + this.props.playerTwo.diceNum + this.props.playerThree.diceNum + this.props.playerFour.diceNum;
@@ -75,14 +75,13 @@ handleDiceDraw = (props) => {
 handleRemoveP1Dice = (props) => {
   const {diceBag} = this.state;
 
-  for(let i = 0; i < diceBag.length; i++){
-    if(diceBag[i] === `${this.props.playerOne.diceColor}`){
-      diceBag.splice(i,1);
+  
+  if(this.state.playerOneRemainingDice > 0 ){
+      diceBag.splice(0,1);
       this.setState({playerOneRemainingDice: this.state.playerOneRemainingDice -1}
       );
-    }
-  }
-  if(this.state.playerOneRemainingDice > 0){
+    
+  
     this.setState({playerOneAmbushDice: this.state.playerOneAmbushDice +1})
   }
 }
@@ -90,14 +89,13 @@ handleRemoveP1Dice = (props) => {
 handleRemoveP2Dice = (props) => {
   const {diceBag} = this.state;
 
-  for(let i = 0; i < diceBag.length; i++){
-    if(diceBag[i] === `${this.props.playerTwo.diceColor}`){
-      diceBag.splice(i,1);
-      this.setState({playerTwoRemainingDice: this.state.playerTwoRemainingDice -1,
-        playerTwoAmbushDice: this.state.playerTwoAmbushDice +1});
-    }
-  }
-  if(this.state.playerTwoRemainingDice > 0){
+  
+  if(this.state.playerTwoRemainingDice > 0 ){
+      diceBag.splice([this.state.playerOneRemainingDice],1);
+      this.setState({playerTwoRemainingDice: this.state.playerTwoRemainingDice -1
+        });
+    
+  
     this.setState({playerTwoAmbushDice: this.state.playerTwoAmbushDice +1})
   }
 }
@@ -105,19 +103,18 @@ handleRemoveP2Dice = (props) => {
 handleP1DiBDestroyed = () => {
   const {diceBag, playerOneTotalDice, playerOneRemainingDice, playerOneAmbushDice} = this.state;
   
-  for(let i = 0; i < diceBag.length; i++){
-    if(diceBag[i] === `${this.props.playerOne.diceColor}` ){
-      diceBag.splice(i,1);
-      this.setState({playerOneRemainingDice: this.state.playerOneRemainingDice -1});
-    }
-  }
-
   
   if(playerOneTotalDice > 0 && playerOneRemainingDice > 0 ){
-  this.setState({playerOneTotalDice: playerOneTotalDice - 1, playerOneRemainingDice: playerOneRemainingDice - 1});
+      diceBag.splice(0,1);
+      this.setState({playerOneRemainingDice: this.state.playerOneRemainingDice -1});
+      this.setState({playerOneTotalDice: playerOneTotalDice - 1, playerOneRemainingDice: playerOneRemainingDice - 1});
+    }
+  
+
+  
   }
   
-}
+
 
 handleP1DoTDestroyed = () => {
   const {diceBag, playerOneTotalDice, playerOneRemainingDice} = this.state;
@@ -130,14 +127,14 @@ handleP1DoTDestroyed = () => {
 handleP2DiBDestroyed = () => {
   const {diceBag, playerTwoTotalDice, playerTwoRemainingDice} = this.state;
 
-  for(let i = 0; i < diceBag.length; i++){
-    if(diceBag[i] === `${this.props.playerTwo.diceColor}`){
-      diceBag.splice(i,1);
-      this.setState({playerTwoRemainingDice: this.state.playerTwoRemainingDice -1});
-    }
-  }
   
+    
   if(playerTwoTotalDice >0 && playerTwoRemainingDice > 0){
+      diceBag.splice([this.state.playerOneRemainingDice],1);
+      this.setState({playerTwoRemainingDice: this.state.playerTwoRemainingDice -1});
+    
+  
+  
   this.setState({playerTwoTotalDice: this.state.playerTwoTotalDice - 1, playerTwoRemainingDice: this.state.playerTwoRemainingDice - 1});
   }
 }
@@ -173,7 +170,7 @@ handleExit = () => {
 render(){
   console.log(this.state.diceBag)
   console.log(this.state.pulledDice)
-  console.log(this.state.gameOver)
+  console.log(this.state.playerOneRemainingDice)
   
   return(
     <div>
