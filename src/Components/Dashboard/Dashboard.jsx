@@ -13,9 +13,11 @@ class Dashboard extends Component {
       pulledDice: '',
       turnNum: 1,
       playerOneTotalDice: this.props.playerOne.diceNum,
-      playerOneRemainingDice: this.props.playerOne.diceNum, 
+      playerOneRemainingDice: this.props.playerOne.diceNum,
+      playerOneAmbushDice: 0, 
       playerTwoTotalDice: this.props.playerTwo.diceNum,
       playerTwoRemainingDice: this.props.playerTwo.diceNum,
+      playerTwoAmbushDice: 0,
       gameOver: false,
       transition: true
     }
@@ -31,7 +33,7 @@ componentDidMount = (props) => {
 
 
 handleDiceTotal = (props) => {
-  const {diceBag, playerOneTotalDice, playerTwoTotalDice} = this.state;
+  const {diceBag, playerOneTotalDice, playerTwoTotalDice, playerOneAmbushDice} = this.state;
   const {playerOne, playerTwo} = this.props;
 
   let totalDice = this.props.playerOne.diceNum + this.props.playerTwo.diceNum + this.props.playerThree.diceNum + this.props.playerFour.diceNum;
@@ -45,7 +47,7 @@ handleDiceTotal = (props) => {
   }
 
 
-  this.setState({totalDice: totalDice, diceRemaining: totalDice})
+  this.setState({totalDice: totalDice, diceRemaining: totalDice, playerOneAmbushDice: 0, playerTwoAmbushDice: 0 })
   
   if(this.state.playerOneTotalDice === 0 || this.state.playerTwoTotalDice === 0){
     this.setState({gameOver: true})
@@ -76,8 +78,12 @@ handleRemoveP1Dice = (props) => {
   for(let i = 0; i < diceBag.length; i++){
     if(diceBag[i] === `${this.props.playerOne.diceColor}`){
       diceBag.splice(i,1);
-      this.setState({playerOneRemainingDice: this.state.playerOneRemainingDice -1});
+      this.setState({playerOneRemainingDice: this.state.playerOneRemainingDice -1}
+      );
     }
+  }
+  if(this.state.playerOneRemainingDice > 0){
+    this.setState({playerOneAmbushDice: this.state.playerOneAmbushDice +1})
   }
 }
 
@@ -87,24 +93,30 @@ handleRemoveP2Dice = (props) => {
   for(let i = 0; i < diceBag.length; i++){
     if(diceBag[i] === `${this.props.playerTwo.diceColor}`){
       diceBag.splice(i,1);
-      this.setState({playerTwoRemainingDice: this.state.playerTwoRemainingDice -1});
+      this.setState({playerTwoRemainingDice: this.state.playerTwoRemainingDice -1,
+        playerTwoAmbushDice: this.state.playerTwoAmbushDice +1});
     }
+  }
+  if(this.state.playerTwoRemainingDice > 0){
+    this.setState({playerTwoAmbushDice: this.state.playerTwoAmbushDice +1})
   }
 }
 
 handleP1DiBDestroyed = () => {
-  const {diceBag, playerOneTotalDice, playerOneRemainingDice} = this.state;
-
+  const {diceBag, playerOneTotalDice, playerOneRemainingDice, playerOneAmbushDice} = this.state;
+  
   for(let i = 0; i < diceBag.length; i++){
-    if(diceBag[i] === `${this.props.playerOne.diceColor}`){
+    if(diceBag[i] === `${this.props.playerOne.diceColor}` ){
       diceBag.splice(i,1);
       this.setState({playerOneRemainingDice: this.state.playerOneRemainingDice -1});
     }
   }
+
   
-  if(playerOneTotalDice >0){
+  if(playerOneTotalDice > 0 && playerOneRemainingDice > 0 ){
   this.setState({playerOneTotalDice: playerOneTotalDice - 1, playerOneRemainingDice: playerOneRemainingDice - 1});
   }
+  
 }
 
 handleP1DoTDestroyed = () => {
@@ -116,7 +128,7 @@ handleP1DoTDestroyed = () => {
 }
 
 handleP2DiBDestroyed = () => {
-  const {diceBag, playerTwoTotalDice} = this.state;
+  const {diceBag, playerTwoTotalDice, playerTwoRemainingDice} = this.state;
 
   for(let i = 0; i < diceBag.length; i++){
     if(diceBag[i] === `${this.props.playerTwo.diceColor}`){
@@ -125,7 +137,7 @@ handleP2DiBDestroyed = () => {
     }
   }
   
-  if(playerTwoTotalDice >0){
+  if(playerTwoTotalDice >0 && playerTwoRemainingDice > 0){
   this.setState({playerTwoTotalDice: this.state.playerTwoTotalDice - 1, playerTwoRemainingDice: this.state.playerTwoRemainingDice - 1});
   }
 }
@@ -236,13 +248,24 @@ render(){
     }
       </Grid.Row>
     <Button.Group vertical>
-    <Button style={{margin: '1px'}} size='big'  color={this.props.playerOne.diceColor} onClick={this.handleRemoveP1Dice}>  Ambush/Down</Button>
+    <Button style={{margin: '1px'}} size='big'  color={this.props.playerOne.diceColor} onClick={this.handleRemoveP1Dice}>  Ambush/Down/Snap
+    {this.state.playerOneAmbushDice > 0 
+    ? 
+    ` (${this.state.playerOneAmbushDice})`
+    :
+    null}</Button>
     <Button style={{margin: '1px'}} size='big' color={this.props.playerOne.diceColor} onClick={this.handleP1DiBDestroyed}> Dice in Bag Destroyed</Button>
     <Button style={{margin: '1px'}} size='big' color={this.props.playerOne.diceColor} onClick={this.handleP1DoTDestroyed}> Dice on table Destroyed</Button>
     </Button.Group>
 
     <Button.Group vertical>
-    <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleRemoveP2Dice}> Ambush/Down</Button>
+  <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleRemoveP2Dice}> Ambush/Down/Snap
+  {this.state.playerTwoAmbushDice > 0 
+    ? 
+    ` (${this.state.playerTwoAmbushDice})`
+    :
+    null}
+    </Button>
     <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleP2DiBDestroyed}> Dice in Bag Destroyed</Button>
     <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleP2DoTDestroyed}> Dice on table Destroyed</Button>
     </Button.Group>
