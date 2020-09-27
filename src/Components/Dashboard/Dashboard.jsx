@@ -58,7 +58,7 @@ handleDiceTotal = (props) => {
 handleDiceDraw = (props) => {
   const {diceBag} = this.state;
   const {playerOne, playerTwo} = this.props;
-  let length = diceBag.length - 1 ;
+  let length = diceBag.length ;
   let random = Math.floor(Math.random() * length);
   
   let pulledDice = diceBag.splice(random, 1);
