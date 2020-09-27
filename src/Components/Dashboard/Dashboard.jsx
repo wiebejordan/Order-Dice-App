@@ -116,7 +116,7 @@ handleP1DoTDestroyed = () => {
 }
 
 handleP2DiBDestroyed = () => {
-  const {diceBag} = this.state;
+  const {diceBag, playerTwoTotalDice} = this.state;
 
   for(let i = 0; i < diceBag.length; i++){
     if(diceBag[i] === `${this.props.playerTwo.diceColor}`){
@@ -124,8 +124,10 @@ handleP2DiBDestroyed = () => {
       this.setState({playerTwoRemainingDice: this.state.playerTwoRemainingDice -1});
     }
   }
- 
+  
+  if(playerTwoTotalDice >0){
   this.setState({playerTwoTotalDice: this.state.playerTwoTotalDice - 1, playerTwoRemainingDice: this.state.playerTwoRemainingDice - 1});
+  }
 }
 
 handleP2DoTDestroyed = () => {
@@ -185,11 +187,14 @@ render(){
         </Segment>
       </Segment.Group>
 
+      
+
+    <div className='dice-container'>
+    {!this.state.pulledDice ? <p style={{fontSize: '19px', color: 'black', marginLeft:'100px'}}>Draw dice to begin turn!</p> : null}
     <Transition
       animation='pulse'
       duration='500'
       visible={this.state.transition}>
-    <div className='dice-container'>
     <div className='dice' style={{
       backgroundColor: `${this.state.pulledDice}`,
       height: '100px',
@@ -207,9 +212,9 @@ render(){
       <p style={{fontSize: '19px'}}> {this.props.playerTwo.name} </p>
       }
       </div>
-      </div>
       </Transition>
-
+      </div>
+      
     <h2 >turn: {this.state.turnNum}</h2>
     
     <Grid stackable centered>
