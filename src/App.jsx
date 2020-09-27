@@ -4,7 +4,7 @@ import './App.css';
 import Landing from '../src/Components/Landing/Landing'
 import routes from './routes';
 import 'semantic-ui-css/semantic.min.css';
-
+import Footer from './Components/Footer/Footer';
 
 
 function App() {
@@ -12,6 +12,7 @@ function App() {
     <div className="App">
       
       {routes}
+      <Footer/>
     </div>
   );
 }
