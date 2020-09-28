@@ -41,6 +41,16 @@ const diceColorOptions = [
     key: 'orange',
     text: 'orange',
     value: 'orange'
+  },
+  {
+    key: 'pink',
+    text: 'pink',
+    value: 'pink'
+  },
+  {
+    key: 'brown',
+    text: 'brown',
+    value: 'brown'
   }
 ]
 

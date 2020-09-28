@@ -177,7 +177,7 @@ render(){
       <Segment.Group style={{margin: '0'}} horizontal>
         <Segment >
           <h5 style={{margin: '0'}}>{this.props.playerOne.name} total units:  </h5>  
-          <h1 style={{margin: '0'}}>{this.state.playerOneTotalDice}</h1>
+          <h1 style={{margin: '0', color:`${this.props.playerOne.diceColor}`}}>{this.state.playerOneTotalDice}</h1>
         </Segment>
         <Segment>
           <h5 style={{margin: '0'}}>{this.props.playerOne.name} dice in bag:</h5>
@@ -193,7 +193,7 @@ render(){
       <Segment.Group style={{margin: '0'}} horizontal>
       <Segment>
           <h5 style={{margin: '0'}}>{this.props.playerTwo.name} total units:  </h5>  
-          <h1 style={{margin: '0'}}>{this.state.playerTwoTotalDice}</h1>
+          <h1 style={{margin: '0', color:`${this.props.playerTwo.diceColor}`}}>{this.state.playerTwoTotalDice}</h1>
         </Segment>
         <Segment>
           <h5 style={{margin: '0'}}>{this.props.playerTwo.name} dice in bag:</h5>
@@ -209,7 +209,8 @@ render(){
       
 
     <div className='dice-container'>
-    {!this.state.pulledDice ? <p style={{fontSize: '19px', color: 'black', marginLeft:'100px'}}>Draw dice to begin turn!</p> : null}
+        {!this.state.pulledDice ? <b style={{fontSize: '15px', color: 'black', marginLeft:'100px'}}>Draw dice to begin turn {this.state.turnNum}!</b> : null}
+    
     <Transition
       animation='pulse'
       duration='500'
@@ -221,9 +222,8 @@ render(){
       marginTop: '5px',
       fontWeight: 'bold',
       borderRadius: '5px'
-
-      
       }}>
+
       {this.state.pulledDice == this.props.playerOne.diceColor 
       ?
       <p style={{fontSize: '19px'}}> {this.props.playerOne.name} </p>
@@ -232,6 +232,7 @@ render(){
       }
       </div>
       </Transition>
+      
       </div>
       
     <h2 >turn: {this.state.turnNum}</h2>
