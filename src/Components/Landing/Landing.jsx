@@ -9,7 +9,7 @@ const Landing = () => {
       <Container textAlign='center'>
         <Segment>
         <p style={{fontSize: '15px'}}>
-          Welcome to the ScaleHistorySLC Order Dice App version 1.1 for Bolt Action! This app makes playing Bolt Action, Warlords of Erewhon, Konflict 47 and other games that use the dice bag mechanic even more Covid-19 friendly! 
+          Welcome to the ScaleHistorySLC Order Dice App version 1.2 for Bolt Action! This app makes playing Bolt Action, Warlords of Erewhon, Konflict 47 and other games that use the dice bag mechanic even more Covid-19 friendly! 
         </p>
 
         <p style={{fontSize: '15px'}}>
@@ -17,7 +17,11 @@ const Landing = () => {
         </p>
 
         <p style={{fontSize: '10px'}}>
-          Feel free to leave me feedback by emailing me at <b>scalehistoryslc@gmail.com </b>  
+          *I am currently working on having up to four players and an undo button. Stay tuned!
+        </p>
+
+        <p style={{fontSize: '12px'}}>
+          Feel free to leave me feedback by emailing me at <b>wiebe.jordan@yahoo.com </b>  
         </p>
 
         <p style={{fontSize: '10px'}}>
