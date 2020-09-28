@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Button, Grid, Modal, Image, Header, Segment, Transition, Divider} from 'semantic-ui-react';
 import '../Dashboard/Dashboard.css'
+import {connect} from 'react-redux';
+import {getGame, clearGame} from '../../redux/gameReducer';
 
 class Dashboard extends Component {
   constructor(props){
@@ -25,11 +27,14 @@ class Dashboard extends Component {
 
 componentDidMount = (props) => {
   this.handleDiceTotal()
-  
- 
-  console.log(this.props)
+  this.props.getGame(this.state)
 }
 
+componentDidUpdate = (prevProps, prevState) => {
+  if(prevState !== this.state){
+    this.props.getGame(this.state)
+  }
+}
 
 
 handleDiceTotal = (props) => {
@@ -165,12 +170,14 @@ handleGameOver = () => {
 
 handleExit = () => {
   window.location.reload(false);
+  this.props.clearGame();
 }
 
 render(){
   console.log(this.state.diceBag)
   console.log(this.state.pulledDice)
-  console.log(this.state.playerOneRemainingDice)
+  console.log(this.props)
+  
   
   return(
     <div>
@@ -266,6 +273,12 @@ render(){
     <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleP2DiBDestroyed}> Dice in Bag Destroyed</Button>
     <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleP2DoTDestroyed}> Dice on table Destroyed</Button>
     </Button.Group>
+
+    <Grid.Row columns={1}>
+      <Button style={{marginTop: '10px'}} size='tiny' onClick={(e) => { if (window.confirm('Are you sure you want to exit your game?')) this.handleExit(e)}}>
+        exit game
+      </Button>
+    </Grid.Row>
     
     </Grid>
 
@@ -290,4 +303,6 @@ render(){
 
 }
 
-export default Dashboard;
+const mapStateToProps = reduxState => reduxState;
+
+export default connect(mapStateToProps, {getGame, clearGame})(Dashboard);
