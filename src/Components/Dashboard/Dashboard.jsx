@@ -149,6 +149,20 @@ handleP1DiBDestroyed = () => {
 
   
   }
+
+  undoP1DiBDestroyed = (props) => {
+    const {diceBag, playerOneTotalDice, playerOneRemainingDice, playerOneAmbushDice} = this.state;
+    
+    
+    if(playerOneTotalDice < this.props.playerOne.diceNum ){
+      diceBag.unshift(`${this.props.playerOne.diceColor}`);
+        this.setState({playerOneRemainingDice: this.state.playerOneRemainingDice +1});
+        this.setState({playerOneTotalDice: playerOneTotalDice + 1, playerOneRemainingDice: playerOneRemainingDice + 1});
+      }
+    
+  
+    
+    }
   
 
 
@@ -157,6 +171,14 @@ handleP1DoTDestroyed = () => {
 
   if(playerOneTotalDice > 0 && playerOneTotalDice != playerOneRemainingDice ){
   this.setState({playerOneTotalDice: playerOneTotalDice -1})
+  }
+}
+
+undoP1DoTDestroyed = (props) => {
+  const {diceBag, playerOneTotalDice, playerOneRemainingDice} = this.state;
+
+  if(playerOneTotalDice < this.props.playerOne.diceNum){
+  this.setState({playerOneTotalDice: playerOneTotalDice +1})
   }
 }
 
@@ -296,12 +318,12 @@ render(){
       </Button.Group>
 
       <Button.Group>
-        <Button style={{width:'50px', margin: '1px'}} icon='undo'/>
+        <Button disabled onClick={this.undoP1DiBDestroyed} style={{width:'50px', margin: '1px'}} icon='undo'/>
         <Button style={{margin: '1px'}} size='big' color={this.props.playerOne.diceColor} onClick={this.handleP1DiBDestroyed}> Dice in Bag Destroyed</Button>
       </Button.Group>
     
       <Button.Group>
-        <Button style={{width:'50px', margin: '1px'}} icon='undo'/>
+        <Button disabled onClick={this.undoP1DoTDestroyed} style={{width:'50px', margin: '1px'}} icon='undo'/>
         <Button style={{margin: '1px'}} size='big' color={this.props.playerOne.diceColor} onClick={this.handleP1DoTDestroyed}> Dice on table Destroyed</Button>
       </Button.Group>
     </Button.Group>
