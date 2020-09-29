@@ -102,6 +102,16 @@ handleRemoveP1Dice = (props) => {
   }
 }
 
+handleUndoP1Dice = (props) => {
+  const {diceBag, playerOneAmbushDice} = this.state;
+
+  if(this.state.playerOneRemainingDice < this.state.playerOneTotalDice){
+  diceBag.unshift(`${this.props.playerOne.diceColor}`);
+  this.setState({playerOneAmbushDice: playerOneAmbushDice -1,
+  playerOneRemainingDice: this.state.playerOneRemainingDice +1 })
+  }
+}
+
 handleRemoveP2Dice = (props) => {
   const {diceBag} = this.state;
 
@@ -113,6 +123,16 @@ handleRemoveP2Dice = (props) => {
     
   
     this.setState({playerTwoAmbushDice: this.state.playerTwoAmbushDice +1})
+  }
+}
+
+handleUndoP2Dice = (props) => {
+  const {diceBag, playerTwoAmbushDice} = this.state;
+
+  if(this.state.playerTwoRemainingDice < this.state.playerTwoTotalDice){
+  diceBag.push(`${this.props.playerTwo.diceColor}`);
+  this.setState({playerTwoAmbushDice: playerTwoAmbushDice -1,
+  playerTwoRemainingDice: this.state.playerTwoRemainingDice +1 })
   }
 }
 
@@ -185,10 +205,10 @@ handleExit = () => {
 }
 
 render(){
-  // console.log(this.state.diceBag)
+  console.log(this.state.diceBag)
   // console.log(this.state.pulledDice)
   // console.log(this.props)
-  console.log(this.state)
+  
   
   
   return(
@@ -263,21 +283,33 @@ render(){
     {this.state.diceBag < 1 ? <Button size='huge' color='blue' onClick={this.handleNextTurn}>Next Turn</Button> : null
     }
       </Grid.Row>
-    <Button.Group vertical>
-      <Button.Group>
-        <Button style={{width:'50px', marginRight: '10px'}} icon='undo'/>
-    <Button style={{margin: '1px'}} size='big'  color={this.props.playerOne.diceColor} onClick={this.handleRemoveP1Dice}>  Ambush/Down/Snap
-    {this.state.playerOneAmbushDice > 0 
-    ? 
-    ` (${this.state.playerOneAmbushDice})`
-    :
-    null}</Button>
+      <Button.Group vertical style={{marginRight: '50px'}}>
+        <Button.Group>
+          <Button onClick={this.handleUndoP1Dice} style={{width:'50px',margin: '1px'}} icon='undo'/>
+          <Button style={{margin: '1px'}} size='big'  color={this.props.playerOne.diceColor} onClick={this.handleRemoveP1Dice}>  Ambush/Down/Snap
+            {this.state.playerOneAmbushDice > 0 
+            ? 
+            ` (${this.state.playerOneAmbushDice})`
+            :
+            null}
+          </Button>
       </Button.Group>
-    <Button style={{margin: '1px'}} size='big' color={this.props.playerOne.diceColor} onClick={this.handleP1DiBDestroyed}> Dice in Bag Destroyed</Button>
-    <Button style={{margin: '1px'}} size='big' color={this.props.playerOne.diceColor} onClick={this.handleP1DoTDestroyed}> Dice on table Destroyed</Button>
+
+      <Button.Group>
+        <Button style={{width:'50px', margin: '1px'}} icon='undo'/>
+        <Button style={{margin: '1px'}} size='big' color={this.props.playerOne.diceColor} onClick={this.handleP1DiBDestroyed}> Dice in Bag Destroyed</Button>
+      </Button.Group>
+    
+      <Button.Group>
+        <Button style={{width:'50px', margin: '1px'}} icon='undo'/>
+        <Button style={{margin: '1px'}} size='big' color={this.props.playerOne.diceColor} onClick={this.handleP1DoTDestroyed}> Dice on table Destroyed</Button>
+      </Button.Group>
     </Button.Group>
 
-    <Button.Group vertical>
+
+    <Button.Group vertical style={{marginRight: '50px'}} >
+    <Button.Group>
+    <Button onClick={this.handleUndoP2Dice} style={{width:'50px',margin: '1px'}} icon='undo'/>
   <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleRemoveP2Dice}> Ambush/Down/Snap
   {this.state.playerTwoAmbushDice > 0 
     ? 
@@ -285,8 +317,17 @@ render(){
     :
     null}
     </Button>
+    </Button.Group>
+
+    <Button.Group>
+    <Button style={{width:'50px',margin: '1px'}} icon='undo'/>
     <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleP2DiBDestroyed}> Dice in Bag Destroyed</Button>
+    </Button.Group>
+
+    <Button.Group>
+    <Button style={{width:'50px',margin: '1px'}} icon='undo'/>
     <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleP2DoTDestroyed}> Dice on table Destroyed</Button>
+    </Button.Group>
     </Button.Group>
 
    
