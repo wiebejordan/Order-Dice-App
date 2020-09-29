@@ -3,6 +3,7 @@ import {Button, Grid, Modal, Image, Header, Segment, Transition, Divider} from '
 import '../Dashboard/Dashboard.css'
 import {connect} from 'react-redux';
 import {getGame, clearGame} from '../../redux/gameReducer';
+import UndoRedo from '../UndoRedo/UndoRedo';
 
 class Dashboard extends Component {
   constructor(props){
@@ -22,8 +23,11 @@ class Dashboard extends Component {
       playerTwoAmbushDice: 0,
       gameOver: false,
       transition: true
+      
     }
   }
+
+
 
 componentDidMount = (props) => {
   this.handleDiceTotal()
@@ -33,7 +37,14 @@ componentDidMount = (props) => {
 componentDidUpdate = (prevProps, prevState) => {
   if(prevState !== this.state){
     this.props.getGame(this.state)
+    
   }
+}
+
+handleUndo = () => {
+  
+
+  
 }
 
 
@@ -174,9 +185,10 @@ handleExit = () => {
 }
 
 render(){
-  console.log(this.state.diceBag)
-  console.log(this.state.pulledDice)
-  console.log(this.props)
+  // console.log(this.state.diceBag)
+  // console.log(this.state.pulledDice)
+  // console.log(this.props)
+  console.log(this.state)
   
   
   return(
@@ -252,12 +264,15 @@ render(){
     }
       </Grid.Row>
     <Button.Group vertical>
+      <Button.Group>
+        <Button style={{width:'50px', marginRight: '10px'}} icon='undo'/>
     <Button style={{margin: '1px'}} size='big'  color={this.props.playerOne.diceColor} onClick={this.handleRemoveP1Dice}>  Ambush/Down/Snap
     {this.state.playerOneAmbushDice > 0 
     ? 
     ` (${this.state.playerOneAmbushDice})`
     :
     null}</Button>
+      </Button.Group>
     <Button style={{margin: '1px'}} size='big' color={this.props.playerOne.diceColor} onClick={this.handleP1DiBDestroyed}> Dice in Bag Destroyed</Button>
     <Button style={{margin: '1px'}} size='big' color={this.props.playerOne.diceColor} onClick={this.handleP1DoTDestroyed}> Dice on table Destroyed</Button>
     </Button.Group>
@@ -273,6 +288,8 @@ render(){
     <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleP2DiBDestroyed}> Dice in Bag Destroyed</Button>
     <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleP2DoTDestroyed}> Dice on table Destroyed</Button>
     </Button.Group>
+
+   
 
     <Grid.Row columns={1}>
       <Button style={{marginTop: '10px'}} size='tiny' onClick={(e) => { if (window.confirm('Are you sure you want to exit your game?')) this.handleExit(e)}}>
