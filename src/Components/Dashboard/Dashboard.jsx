@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
-import {Button, Grid, Modal, Image, Header, Segment, Transition, Divider} from 'semantic-ui-react';
+import {Button, Grid, Modal, Image, Header, Segment, Transition, Icon} from 'semantic-ui-react';
 import '../Dashboard/Dashboard.css'
+import {connect} from 'react-redux';
+import {getGame, clearGame} from '../../redux/gameReducer';
+import UndoRedo from '../UndoRedo/UndoRedo';
+import { ActionCreators } from 'redux-undo';
+import store from '../../redux/store';
 
 class Dashboard extends Component {
   constructor(props){
@@ -19,17 +24,36 @@ class Dashboard extends Component {
       playerTwoRemainingDice: this.props.playerTwo.diceNum,
       playerTwoAmbushDice: 0,
       gameOver: false,
-      transition: true
+      transition: true,
+      drawDice: true
+      
     }
   }
 
+
+
 componentDidMount = (props) => {
   this.handleDiceTotal()
-  
- 
-  console.log(this.props)
+  this.props.getGame(this.state)
 }
 
+componentDidUpdate = (prevProps, prevState) => {
+  if(prevState !== this.state){
+    this.props.getGame(this.state)
+    
+  } 
+  
+   
+}
+
+handleUndo = () => {
+    const {totalDice, playerOneTotalDice, playerOneRemainingDice, playerOneAmbushDice, playerTwoTotalDice, playerTwoRemainingDice, playerTwoAmbushDice, diceBag} = this.props.game.past[this.props.game.past.length-1].game
+  
+    if(this.state.drawDice === false){
+    this.setState({totalDice: totalDice, playerOneTotalDice: playerOneTotalDice, playerOneRemainingDice: playerOneRemainingDice, playerOneAmbushDice: playerOneAmbushDice, playerTwoTotalDice: playerTwoTotalDice, playerTwoRemainingDice: playerTwoRemainingDice, playerTwoAmbushDice: playerTwoAmbushDice})
+    }
+  
+}
 
 
 handleDiceTotal = (props) => {
@@ -69,7 +93,8 @@ handleDiceDraw = (props) => {
   }else if (pulledDice == this.props.playerTwo.diceColor){
     this.setState({playerTwoRemainingDice: this.state.playerTwoRemainingDice -1})
   }
-  this.setState((prevState) => ({ transition: !prevState.transition }))
+  this.setState((prevState) => ({ transition: !prevState.transition, drawDice: true }))
+  
 }
 
 handleRemoveP1Dice = (props) => {
@@ -82,7 +107,7 @@ handleRemoveP1Dice = (props) => {
       );
     
   
-    this.setState({playerOneAmbushDice: this.state.playerOneAmbushDice +1})
+    this.setState({playerOneAmbushDice: this.state.playerOneAmbushDice +1, drawDice: false})
   }
 }
 
@@ -96,7 +121,7 @@ handleRemoveP2Dice = (props) => {
         });
     
   
-    this.setState({playerTwoAmbushDice: this.state.playerTwoAmbushDice +1})
+    this.setState({playerTwoAmbushDice: this.state.playerTwoAmbushDice +1, drawDice: false})
   }
 }
 
@@ -107,7 +132,7 @@ handleP1DiBDestroyed = () => {
   if(playerOneTotalDice > 0 && playerOneRemainingDice > 0 ){
       diceBag.splice(0,1);
       this.setState({playerOneRemainingDice: this.state.playerOneRemainingDice -1});
-      this.setState({playerOneTotalDice: playerOneTotalDice - 1, playerOneRemainingDice: playerOneRemainingDice - 1});
+      this.setState({playerOneTotalDice: playerOneTotalDice - 1, playerOneRemainingDice: playerOneRemainingDice - 1, drawDice: false});
     }
   
 
@@ -120,7 +145,7 @@ handleP1DoTDestroyed = () => {
   const {diceBag, playerOneTotalDice, playerOneRemainingDice} = this.state;
 
   if(playerOneTotalDice > 0 && playerOneTotalDice != playerOneRemainingDice ){
-  this.setState({playerOneTotalDice: playerOneTotalDice -1})
+  this.setState({playerOneTotalDice: playerOneTotalDice -1, drawDice: false})
   }
 }
 
@@ -131,7 +156,7 @@ handleP2DiBDestroyed = () => {
     
   if(playerTwoTotalDice >0 && playerTwoRemainingDice > 0){
       diceBag.splice([this.state.playerOneRemainingDice],1);
-      this.setState({playerTwoRemainingDice: this.state.playerTwoRemainingDice -1});
+      this.setState({playerTwoRemainingDice: this.state.playerTwoRemainingDice -1, drawDice: false});
     
   
   
@@ -143,7 +168,7 @@ handleP2DoTDestroyed = () => {
   const {diceBag, playerTwoTotalDice, playerTwoRemainingDice} = this.state;
 
   if(playerTwoTotalDice > 0 && playerTwoTotalDice != playerTwoRemainingDice){
-  this.setState({playerTwoTotalDice: playerTwoTotalDice -1})
+  this.setState({playerTwoTotalDice: playerTwoTotalDice -1, drawDice: false})
   }
 }
 
@@ -152,7 +177,8 @@ handleNextTurn = () => {
     turnNum: this.state.turnNum + 1,
     pulledDice: '',
     playerTwoRemainingDice: this.state.playerTwoTotalDice,
-    playerOneRemainingDice: this.state.playerOneTotalDice
+    playerOneRemainingDice: this.state.playerOneTotalDice, 
+    drawDice: true
   })
   this.handleDiceTotal()
 }
@@ -165,12 +191,15 @@ handleGameOver = () => {
 
 handleExit = () => {
   window.location.reload(false);
+  this.props.clearGame();
 }
 
 render(){
   console.log(this.state.diceBag)
   console.log(this.state.pulledDice)
-  console.log(this.state.playerOneRemainingDice)
+  console.log(this.state.drawDice)
+
+  
   
   return(
     <div>
@@ -244,7 +273,13 @@ render(){
     }
     {this.state.diceBag < 1 ? <Button size='huge' color='blue' onClick={this.handleNextTurn}>Next Turn</Button> : null
     }
+    
+    <Button style={{marginLeft: '15px'}} onClick={this.handleUndo}  >
+    <Icon name='undo'/>
+    </Button>
+
       </Grid.Row>
+
     <Button.Group vertical>
     <Button style={{margin: '1px'}} size='big'  color={this.props.playerOne.diceColor} onClick={this.handleRemoveP1Dice}>  Ambush/Down/Snap
     {this.state.playerOneAmbushDice > 0 
@@ -267,6 +302,15 @@ render(){
     <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleP2DiBDestroyed}> Dice in Bag Destroyed</Button>
     <Button style={{margin: '1px'}} size='big' color={this.props.playerTwo.diceColor} onClick={this.handleP2DoTDestroyed}> Dice on table Destroyed</Button>
     </Button.Group>
+
+   
+    
+
+    <Grid.Row columns={1}>
+      <Button style={{marginTop: '10px'}} size='tiny' onClick={(e) => { if (window.confirm('Are you sure you want to exit your game?')) this.handleExit(e)}}>
+        exit game
+      </Button>
+    </Grid.Row>
     
     </Grid>
 
@@ -291,4 +335,6 @@ render(){
 
 }
 
-export default Dashboard;
+const mapStateToProps = reduxState => reduxState;
+
+export default connect(mapStateToProps, {getGame, clearGame})(Dashboard);
