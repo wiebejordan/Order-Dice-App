@@ -25,7 +25,9 @@ class Dashboard extends Component {
       playerTwoAmbushDice: 0,
       gameOver: false,
       transition: true,
-      drawDice: true
+      drawDice: true,
+      playerOneUndo: true,
+      dotLast: false
       
     }
   }
@@ -50,7 +52,13 @@ handleUndo = () => {
     const {totalDice, playerOneTotalDice, playerOneRemainingDice, playerOneAmbushDice, playerTwoTotalDice, playerTwoRemainingDice, playerTwoAmbushDice, diceBag} = this.props.game.past[this.props.game.past.length-1].game
   
     if(this.state.drawDice === false){
-    this.setState({totalDice: totalDice, playerOneTotalDice: playerOneTotalDice, playerOneRemainingDice: playerOneRemainingDice, playerOneAmbushDice: playerOneAmbushDice, playerTwoTotalDice: playerTwoTotalDice, playerTwoRemainingDice: playerTwoRemainingDice, playerTwoAmbushDice: playerTwoAmbushDice})
+    this.setState({totalDice: totalDice, playerOneTotalDice: playerOneTotalDice, playerOneRemainingDice: playerOneRemainingDice, playerOneAmbushDice: playerOneAmbushDice, playerTwoTotalDice: playerTwoTotalDice, playerTwoRemainingDice: playerTwoRemainingDice, playerTwoAmbushDice: playerTwoAmbushDice, drawDice: true})
+
+    if(this.state.playerOneUndo === true && this.state.dotLast === false){
+    diceBag.unshift(this.props.playerOne.diceColor) 
+    } 
+    else if(this.state.playerOneUndo === false && this.state.dotLast === false)
+    diceBag.push(this.props.playerTwo.diceColor)
     }
   
 }
@@ -107,7 +115,7 @@ handleRemoveP1Dice = (props) => {
       );
     
   
-    this.setState({playerOneAmbushDice: this.state.playerOneAmbushDice +1, drawDice: false})
+    this.setState({playerOneAmbushDice: this.state.playerOneAmbushDice +1, drawDice: false, playerOneUndo: true, dotLast: false})
   }
 }
 
@@ -121,7 +129,7 @@ handleRemoveP2Dice = (props) => {
         });
     
   
-    this.setState({playerTwoAmbushDice: this.state.playerTwoAmbushDice +1, drawDice: false})
+    this.setState({playerTwoAmbushDice: this.state.playerTwoAmbushDice +1, drawDice: false, playerOneUndo: false, dotLast: false})
   }
 }
 
@@ -132,7 +140,7 @@ handleP1DiBDestroyed = () => {
   if(playerOneTotalDice > 0 && playerOneRemainingDice > 0 ){
       diceBag.splice(0,1);
       this.setState({playerOneRemainingDice: this.state.playerOneRemainingDice -1});
-      this.setState({playerOneTotalDice: playerOneTotalDice - 1, playerOneRemainingDice: playerOneRemainingDice - 1, drawDice: false});
+      this.setState({playerOneTotalDice: playerOneTotalDice - 1, playerOneRemainingDice: playerOneRemainingDice - 1, drawDice: false, playerOneUndo: true, dotLast: false});
     }
   
 
@@ -145,7 +153,7 @@ handleP1DoTDestroyed = () => {
   const {diceBag, playerOneTotalDice, playerOneRemainingDice} = this.state;
 
   if(playerOneTotalDice > 0 && playerOneTotalDice != playerOneRemainingDice ){
-  this.setState({playerOneTotalDice: playerOneTotalDice -1, drawDice: false})
+  this.setState({playerOneTotalDice: playerOneTotalDice -1, drawDice: false, playerOneUndo: true, dotLast: true})
   }
 }
 
@@ -156,7 +164,7 @@ handleP2DiBDestroyed = () => {
     
   if(playerTwoTotalDice >0 && playerTwoRemainingDice > 0){
       diceBag.splice([this.state.playerOneRemainingDice],1);
-      this.setState({playerTwoRemainingDice: this.state.playerTwoRemainingDice -1, drawDice: false});
+      this.setState({playerTwoRemainingDice: this.state.playerTwoRemainingDice -1, drawDice: false, playerOneUndo: false, dotLast: false});
     
   
   
@@ -168,7 +176,7 @@ handleP2DoTDestroyed = () => {
   const {diceBag, playerTwoTotalDice, playerTwoRemainingDice} = this.state;
 
   if(playerTwoTotalDice > 0 && playerTwoTotalDice != playerTwoRemainingDice){
-  this.setState({playerTwoTotalDice: playerTwoTotalDice -1, drawDice: false})
+  this.setState({playerTwoTotalDice: playerTwoTotalDice -1, drawDice: false, playerOneUndo: true, dotLast: true})
   }
 }
 
@@ -196,8 +204,8 @@ handleExit = () => {
 
 render(){
   console.log(this.state.diceBag)
-  console.log(this.state.pulledDice)
-  console.log(this.state.drawDice)
+  console.log(this.state.playerOneUndo)
+  // console.log(this.props.game.past)
 
   
   

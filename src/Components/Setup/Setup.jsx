@@ -214,7 +214,7 @@ const Setup = () => {
 
   const [playerCount, setPlayerCount] = useState(2),
         [playerOne, setPlayerOne] = useState({name: 'j', diceNum: 3, diceColor:'olive'}),
-        [playerTwo, setPlayerTwo] = useState({name: 't', diceNum: 3, diceColor:'orange'}),
+        [playerTwo, setPlayerTwo] = useState({name: 't', diceNum: 3, diceColor:'pink'}),
         [playerThree, setPlayerThree] = useState({name: '', diceNum: 0, diceColor:''}),
         [playerFour, setPlayerFour] = useState({name: '', diceNum: 0, diceColor:''}),
         [startGame, setStartGame] = useState(false),
@@ -230,7 +230,7 @@ const Setup = () => {
     if(playerTwo.name.length > 10){
       setPTwoError(true)
     }else{setPTwoError(false)}
-    console.log(playerTwo.name.length, pOneError) 
+    // console.log(playerTwo.name.length, pOneError) 
     
   })
 
