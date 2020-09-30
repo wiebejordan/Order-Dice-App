@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { connect } from 'react-redux';
 import { Dropdown, Grid, Input, Segment, Button, Message } from 'semantic-ui-react';
 import Dashboard from '../Dashboard/Dashboard'
 
@@ -170,7 +171,34 @@ const diceNumOptions = [
     text: '25',
     value: 25
   },
+  {
+    key: 26,
+    text: '26',
+    value: 26
+  },
+  {
+    key: 27,
+    text: '27',
+    value: 27
+  },
+  {
+    key: 28,
+    text: '28',
+    value: 28
+  },
+  {
+    key: 29,
+    text: '29',
+    value: 29
+  },
+  {
+    key: 30,
+    text: '30',
+    value: 30
+  }
 ]
+
+const mapStateToProps = reduxState => reduxState;
 
 const Setup = () => {
 
@@ -402,4 +430,4 @@ const Setup = () => {
   )
 }
 
-export default Setup;
+export default connect(mapStateToProps)(Setup);

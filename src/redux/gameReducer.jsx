@@ -1,4 +1,5 @@
-import undoable, {distinctState} from 'redux-undo';
+import {combineReducers} from 'redux';
+import undoable from 'redux-undo';
 
 const initialState = {
   game: {
@@ -36,7 +37,7 @@ export function clearGame(){
 }
 
 
-const game = (state= initialState, action) => {
+const game = (state = initialState, action) => {
   const {type, payload} = action;
   switch(type){
     case GET_GAME:
@@ -48,6 +49,8 @@ const game = (state= initialState, action) => {
   }
 }
 
-const undoableGame = undoable(game)
+export default combineReducers({
+  game: undoable(game)
+});
 
-export default undoableGame;
+
