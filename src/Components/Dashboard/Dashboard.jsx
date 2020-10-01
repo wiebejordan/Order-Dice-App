@@ -25,6 +25,7 @@ class Dashboard extends Component {
       playerTwoAmbushDice: 0,
       gameOver: false,
       transition: true,
+      transition2: true,
       drawDice: true,
       playerOneUndo: true,
       dotLast: false
@@ -59,6 +60,8 @@ handleUndo = () => {
     } 
     else if(this.state.playerOneUndo === false && this.state.dotLast === false)
     diceBag.push(this.props.playerTwo.diceColor)
+
+    this.setState((prevState) => ({ transition2: !prevState.transition2}))
     }
   
 }
@@ -282,9 +285,14 @@ render(){
     {this.state.diceBag < 1 ? <Button size='huge' color='blue' onClick={this.handleNextTurn}>Next Turn</Button> : null
     }
     
+    <Transition
+      animation='pulse'
+      duration='500'
+      visible={this.state.transition2}>
     <Button style={{marginLeft: '15px'}} onClick={this.handleUndo}  >
     <Icon name='undo'/>
     </Button>
+    </Transition>
 
       </Grid.Row>
 

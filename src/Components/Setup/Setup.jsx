@@ -52,6 +52,11 @@ const diceColorOptions = [
     key: 'brown',
     text: 'brown',
     value: 'brown'
+  },
+  {
+    key: 'blue',
+    text: 'blue',
+    value: 'blue'
   }
 ]
 
@@ -213,8 +218,8 @@ const mapStateToProps = reduxState => reduxState;
 const Setup = () => {
 
   const [playerCount, setPlayerCount] = useState(2),
-        [playerOne, setPlayerOne] = useState({name: 'j', diceNum: 3, diceColor:'olive'}),
-        [playerTwo, setPlayerTwo] = useState({name: 't', diceNum: 3, diceColor:'pink'}),
+        [playerOne, setPlayerOne] = useState({name: '', diceNum: null, diceColor:''}),
+        [playerTwo, setPlayerTwo] = useState({name: '', diceNum: null, diceColor:''}),
         [playerThree, setPlayerThree] = useState({name: '', diceNum: 0, diceColor:''}),
         [playerFour, setPlayerFour] = useState({name: '', diceNum: 0, diceColor:''}),
         [startGame, setStartGame] = useState(false),
