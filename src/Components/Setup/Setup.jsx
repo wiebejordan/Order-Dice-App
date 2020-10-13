@@ -228,18 +228,20 @@ const Setup = () => {
     }),
     [playerThree, setPlayerThree] = useState({
       name: "",
-      diceNum: 0,
+      diceNum: null,
       diceColor: "",
     }),
     [playerFour, setPlayerFour] = useState({
       name: "",
-      diceNum: 0,
+      diceNum: null,
       diceColor: "",
     }),
     [startGame, setStartGame] = useState(false),
     [hideStart, setHideStart] = useState(false),
     [pOneError, setPOneError] = useState(false),
-    [pTwoError, setPTwoError] = useState(false);
+    [pTwoError, setPTwoError] = useState(false),
+    [pThreeError, setPThreeError] = useState(false),
+    [pFourError, setPFourError] = useState(false);
 
   useEffect(() => {
     if (playerOne.name.length > 10) {
@@ -253,7 +255,19 @@ const Setup = () => {
     } else {
       setPTwoError(false);
     }
-    // console.log(playerTwo.name.length, pOneError)
+
+    if (playerThree.name.length > 10) {
+      setPThreeError(true);
+    } else {
+      setPThreeError(false);
+    }
+
+    if (playerFour.name.length > 10) {
+      setPFourError(true);
+    } else {
+      setPFourError(false);
+    }
+    
   });
 
   const handlePlayerCount = (e, { value }) => {
@@ -294,14 +308,23 @@ const Setup = () => {
 
   return (
     <div>
-      {/* {startGame === false ?  
+      {startGame === false ?
+      <Grid centered>
+        <Grid.Column  width={4}>
+          <Segment>
+      <h3>Select number of players</h3>
+      
       <Dropdown
       placeholder='Select number of players'
       fluid
       selection
       options={playerCountOptions}
       onChange = {handlePlayerCount}
-      />:null} */}
+      />
+      </Segment> 
+      </Grid.Column>
+      </Grid>
+      :null}
 
       {startGame === false ? (
         <Grid stackable columns={2}>
@@ -385,71 +408,88 @@ const Setup = () => {
             {playerCount > 2 ? (
               <Grid.Column>
                 <Segment>
-                  <h3>Player 3</h3>
-                  <Input
-                    onChange={(e) => onInputChangeThree(e)}
-                    placeholder="enter player name"
-                    name="name"
-                    value={playerThree.name}
-                  />
-                  <Dropdown
-                    placeholder="number of dice"
-                    name="diceNum"
-                    value={playerThree.diceNum}
-                    onChange={onInputChangeThree}
-                    fluid
-                    selection
-                    options={diceNumOptions}
-                  />
-                  <Dropdown
-                    placeholder="order dice color"
-                    name="diceColor"
-                    value={playerThree.diceColor}
-                    onChange={onInputChangeThree}
-                    fluid
-                    selection
-                    options={diceColorOptions}
-                  />
-                </Segment>
+                <h3>Player 3</h3>
+                <h4 style={{ margin: "0" }}>Player Name</h4>
+                <Input
+                  onChange={(e) => onInputChangeThree(e)}
+                  placeholder="enter player name"
+                  name="name"
+                  value={playerThree.name}
+                />
+                {pThreeError === true ? (
+                  <Message negative>
+                    <p>Name must be less than 10 characters</p>
+                  </Message>
+                ) : null}
+                <h4 style={{ margin: "0" }}>Number of Order Dice</h4>
+                <Dropdown
+                  placeholder="number of dice"
+                  name="diceNum"
+                  value={playerThree.diceNum}
+                  onChange={onInputChangeThree}
+                  fluid
+                  selection
+                  options={diceNumOptions}
+                />
+                <h4 style={{ margin: "0" }}>Order Dice Color</h4>
+                <Dropdown
+                  placeholder="order dice color"
+                  name="diceColor"
+                  value={playerThree.diceColor}
+                  onChange={onInputChangeThree}
+                  fluid
+                  selection
+                  options={diceColorOptions}
+                />
+              </Segment>
               </Grid.Column>
             ) : null}
 
             {playerCount > 3 ? (
               <Grid.Column>
                 <Segment>
-                  <h3>Player 4</h3>
-                  <Input
-                    onChange={(e) => onInputChangeFour(e)}
-                    placeholder="enter player name"
-                    name="name"
-                    value={playerFour.name}
-                  />
-                  <Dropdown
-                    placeholder="number of dice"
-                    name="diceNum"
-                    value={playerFour.diceNum}
-                    onChange={onInputChangeFour}
-                    fluid
-                    selection
-                    options={diceNumOptions}
-                  />
-                  <Dropdown
-                    placeholder="order dice color"
-                    name="diceColor"
-                    value={playerFour.diceColor}
-                    onChange={onInputChangeFour}
-                    fluid
-                    selection
-                    options={diceColorOptions}
-                  />
-                </Segment>
+                <h3>Player 4</h3>
+                <h4 style={{ margin: "0" }}>Player Name</h4>
+                <Input
+                  onChange={(e) => onInputChangeFour(e)}
+                  placeholder="enter player name"
+                  name="name"
+                  value={playerFour.name}
+                />
+                {pFourError === true ? (
+                  <Message negative>
+                    <p>Name must be less than 10 characters</p>
+                  </Message>
+                ) : null}
+                <h4 style={{ margin: "0" }}>Number of Order Dice</h4>
+                <Dropdown
+                  placeholder="number of dice"
+                  name="diceNum"
+                  value={playerFour.diceNum}
+                  onChange={onInputChangeFour}
+                  fluid
+                  selection
+                  options={diceNumOptions}
+                />
+                <h4 style={{ margin: "0" }}>Order Dice Color</h4>
+                <Dropdown
+                  placeholder="order dice color"
+                  name="diceColor"
+                  value={playerFour.diceColor}
+                  onChange={onInputChangeFour}
+                  fluid
+                  selection
+                  options={diceColorOptions}
+                />
+              </Segment>
               </Grid.Column>
             ) : null}
           </Grid.Row>
         </Grid>
       ) : null}
 
-      {playerOne.name &&
+      {playerCount === 2 &&
+      playerOne.name &&
       playerOne.diceNum > 0 &&
       playerOne.diceColor &&
       playerTwo.name &&
@@ -458,6 +498,56 @@ const Setup = () => {
       hideStart === false &&
       pOneError === false &&
       pTwoError === false ? (
+        <Button
+          onClick={handleStartGame}
+          style={{ margin: "10px" }}
+          size="huge"
+        >
+          Start Game
+        </Button>
+      ) : null}
+
+      {playerCount === 3 &&
+      playerOne.name &&
+      playerOne.diceNum > 0 &&
+      playerOne.diceColor &&
+      playerTwo.name &&
+      playerTwo.diceNum > 0 &&
+      playerTwo.diceColor &&
+      playerThree.name &&
+      playerThree.diceNum > 0 &&
+      playerThree.diceColor &&
+      hideStart === false &&
+      pOneError === false &&
+      pTwoError === false &&
+      pThreeError === false ?(
+        <Button
+          onClick={handleStartGame}
+          style={{ margin: "10px" }}
+          size="huge"
+        >
+          Start Game
+        </Button>
+      ) : null}
+
+    {playerCount === 4 &&
+      playerOne.name &&
+      playerOne.diceNum > 0 &&
+      playerOne.diceColor &&
+      playerTwo.name &&
+      playerTwo.diceNum > 0 &&
+      playerTwo.diceColor &&
+      playerThree.name &&
+      playerThree.diceNum > 0 &&
+      playerThree.diceColor &&
+      playerFour.name &&
+      playerFour.diceNum > 0 &&
+      playerFour.diceColor &&
+      hideStart === false &&
+      pOneError === false &&
+      pTwoError === false &&
+      pThreeError === false  && 
+      pFourError === false ? (
         <Button
           onClick={handleStartGame}
           style={{ margin: "10px" }}
