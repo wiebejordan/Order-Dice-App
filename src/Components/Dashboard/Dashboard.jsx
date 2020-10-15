@@ -34,7 +34,7 @@ class Dashboard extends Component {
       transition: true,
       transition2: true,
       drawDice: true,
-      playerOneUndo: true,
+      whoUndo: null,
       dotLast: false,
     };
   }
@@ -86,17 +86,29 @@ class Dashboard extends Component {
         drawDice: true,
       });
 
-      if (this.state.playerOneUndo === true && this.state.dotLast === false) {
+      if (this.state.whoUndo === 'playerOne' && this.state.dotLast === false) {
         diceBag.unshift(this.props.playerOne.diceColor);
       } else if (
-        this.state.playerOneUndo === false &&
+        this.state.whoUndo === 'playerTwo' &&
         this.state.dotLast === false
-      )
-        diceBag.push(this.props.playerTwo.diceColor);
+      ){
+        diceBag.splice([this.state.playerOneRemainingDice + this.state.playerTwoRemainingDice], 0, this.props.playerTwo.diceColor);
+      } else if (
+        this.state.whoUndo === 'playerThree' &&
+        this.state.dotLast === false
+      ){
+        diceBag.splice([this.state.playerOneRemainingDice + this.state.playerTwoRemainingDice + this.state.playerThreeRemainingDice], 0, this.props.playerThree.diceColor);
+      } else if (
+        this.state.whoUndo === 'playerFour' &&
+        this.state.dotLast === false
+      ){
+        diceBag.splice([this.state.playerOneRemainingDice + this.state.playerTwoRemainingDice + this.state.playerThreeRemainingDice + this.state.playerFourRemainingDice], 0, this.props.playerFour.diceColor);
+      }
 
       this.setState((prevState) => ({ transition2: !prevState.transition2 }));
     }
   };
+  
 
   handleDiceTotal = (props) => {
     const { diceBag, playerOneTotalDice, playerTwoTotalDice, playerThreeTotalDice, playerFourTotalDice } = this.state;
@@ -185,7 +197,7 @@ class Dashboard extends Component {
       this.setState({
         playerOneAmbushDice: this.state.playerOneAmbushDice + 1,
         drawDice: false,
-        playerOneUndo: true,
+        whoUndo: 'playerOne',
         dotLast: false,
       });
     }
@@ -203,7 +215,7 @@ class Dashboard extends Component {
       this.setState({
         playerTwoAmbushDice: this.state.playerTwoAmbushDice + 1,
         drawDice: false,
-        playerOneUndo: false,
+        whoUndo: 'playerTwo',
         dotLast: false,
       });
     }
@@ -221,7 +233,7 @@ class Dashboard extends Component {
       this.setState({
         playerThreeAmbushDice: this.state.playerThreeAmbushDice + 1,
         drawDice: false,
-        playerOneUndo: false,
+        whoUndo: 'playerThree',
         dotLast: false,
       });
     }
@@ -239,7 +251,7 @@ class Dashboard extends Component {
       this.setState({
         playerFourAmbushDice: this.state.playerFourAmbushDice + 1,
         drawDice: false,
-        playerOneUndo: false,
+        whoUndo: 'playerFour',
         dotLast: false,
       });
     }
@@ -262,7 +274,7 @@ class Dashboard extends Component {
         playerOneTotalDice: playerOneTotalDice - 1,
         playerOneRemainingDice: playerOneRemainingDice - 1,
         drawDice: false,
-        playerOneUndo: true,
+        whoUndo: 'playerOne',
         dotLast: false,
       });
     }
@@ -278,7 +290,7 @@ class Dashboard extends Component {
       this.setState({
         playerOneTotalDice: playerOneTotalDice - 1,
         drawDice: false,
-        playerOneUndo: true,
+        whoUndo: 'playerOne',
         dotLast: true,
       });
     }
@@ -292,7 +304,7 @@ class Dashboard extends Component {
       this.setState({
         playerTwoRemainingDice: this.state.playerTwoRemainingDice - 1,
         drawDice: false,
-        playerOneUndo: false,
+        whoUndo: 'playerTwo',
         dotLast: false,
       });
 
@@ -313,7 +325,7 @@ class Dashboard extends Component {
       this.setState({
         playerTwoTotalDice: playerTwoTotalDice - 1,
         drawDice: false,
-        playerOneUndo: true,
+        whoUndo: 'playerTwo',
         dotLast: true,
       });
     }
@@ -336,7 +348,7 @@ class Dashboard extends Component {
         playerThreeTotalDice: playerThreeTotalDice - 1,
         playerThreeRemainingDice: playerThreeRemainingDice - 1,
         drawDice: false,
-        playerThreeUndo: true,
+        whoUndo: 'playerThree',
         dotLast: false,
       });
     }
@@ -352,7 +364,7 @@ class Dashboard extends Component {
       this.setState({
         playerThreeTotalDice: playerThreeTotalDice - 1,
         drawDice: false,
-        playerThreeUndo: true,
+        whoUndo: 'playerFour',
         dotLast: true,
       });
     }
@@ -375,7 +387,7 @@ class Dashboard extends Component {
         playerFourTotalDice: playerFourTotalDice - 1,
         playerFourRemainingDice: playerFourRemainingDice - 1,
         drawDice: false,
-        playerFourUndo: true,
+        whoUndo: 'playerFour',
         dotLast: false,
       });
     }
@@ -391,7 +403,7 @@ class Dashboard extends Component {
       this.setState({
         playerFourTotalDice: playerFourTotalDice - 1,
         drawDice: false,
-        playerFourUndo: true,
+        whoUndo: 'playerFour',
         dotLast: true,
       });
     }
@@ -406,6 +418,7 @@ class Dashboard extends Component {
       playerThreeRemainingDice: this.state.playerThreeTotalDice,
       playerFourRemainingDice: this.state.playerFourTotalDice,
       drawDice: true,
+      whoUndo: null
     });
     this.handleDiceTotal();
   };
@@ -426,7 +439,7 @@ class Dashboard extends Component {
 
   render() {
     console.log(this.state.diceBag);
-    console.log(this.state.playerOneUndo);
+    console.log(this.state.whoUndo);
     console.log('pulled dice', this.state.pulledDice);
 
     return (
