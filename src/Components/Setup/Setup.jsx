@@ -215,26 +215,26 @@ const diceNumOptions = [
 const mapStateToProps = (reduxState) => reduxState;
 
 const Setup = () => {
-  const [playerCount, setPlayerCount] = useState(2),
+  const [playerCount, setPlayerCount] = useState(4),
     [playerOne, setPlayerOne] = useState({
-      name: "",
-      diceNum: null,
-      diceColor: "",
+      name: "one",
+      diceNum: 3,
+      diceColor: "orange",
     }),
     [playerTwo, setPlayerTwo] = useState({
-      name: "",
-      diceNum: null,
-      diceColor: "",
+      name: "two",
+      diceNum: 3,
+      diceColor: "black",
     }),
     [playerThree, setPlayerThree] = useState({
-      name: "",
-      diceNum: null,
-      diceColor: "",
+      name: "three",
+      diceNum: 3,
+      diceColor: "grey",
     }),
     [playerFour, setPlayerFour] = useState({
-      name: "",
-      diceNum: null,
-      diceColor: "",
+      name: "four",
+      diceNum: 3,
+      diceColor: "blue",
     }),
     [startGame, setStartGame] = useState(false),
     [hideStart, setHideStart] = useState(false),
@@ -563,6 +563,7 @@ const Setup = () => {
           playerTwo={playerTwo}
           playerThree={playerThree}
           playerFour={playerFour}
+          playerCount={playerCount}
         />
       )}
     </div>

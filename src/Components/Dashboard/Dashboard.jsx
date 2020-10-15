@@ -3,6 +3,7 @@ import {Button, Grid, Modal, Image, Header, Segment, Transition, Icon,} from "se
 import "../Dashboard/Dashboard.css";
 import { connect } from "react-redux";
 import { getGame, clearGame } from "../../redux/gameReducer";
+import FourPlayerDash from '../FourPlayerDash/FourPlayerDash';
 import UndoRedo from "../UndoRedo/UndoRedo";
 import { ActionCreators } from "redux-undo";
 import store from "../../redux/store";
@@ -23,6 +24,12 @@ class Dashboard extends Component {
       playerTwoTotalDice: this.props.playerTwo.diceNum,
       playerTwoRemainingDice: this.props.playerTwo.diceNum,
       playerTwoAmbushDice: 0,
+      playerThreeTotalDice: this.props.playerThree.diceNum,
+      playerThreeRemainingDice: this.props.playerThree.diceNum,
+      playerThreeAmbushDice: 0,
+      playerFourTotalDice: this.props.playerFour.diceNum,
+      playerFourRemainingDice: this.props.playerFour.diceNum,
+      playerFourAmbushDice: 0,
       gameOver: false,
       transition: true,
       transition2: true,
@@ -80,8 +87,8 @@ class Dashboard extends Component {
   };
 
   handleDiceTotal = (props) => {
-    const { diceBag, playerOneTotalDice, playerTwoTotalDice } = this.state;
-    const { playerOne, playerTwo } = this.props;
+    const { diceBag, playerOneTotalDice, playerTwoTotalDice, playerThreeTotalDice, playerFourTotalDice } = this.state;
+    const { playerOne, playerTwo, playerThree, playerFour } = this.props;
 
     let totalDice =
       this.props.playerOne.diceNum +
@@ -97,24 +104,34 @@ class Dashboard extends Component {
       diceBag.push(`${playerTwo.diceColor}`);
     }
 
+    for (let i = 0; i < playerThreeTotalDice; i++) {
+      diceBag.push(`${playerThree.diceColor}`);
+    }
+
+    for (let i = 0; i < playerFourTotalDice; i++) {
+      diceBag.push(`${playerFour.diceColor}`);
+    }
+
     this.setState({
       totalDice: totalDice,
       diceRemaining: totalDice,
       playerOneAmbushDice: 0,
       playerTwoAmbushDice: 0,
+      playerThreeAmbushDice: 0,
+      playerFourAmbushDice: 0
     });
 
-    if (
-      this.state.playerOneTotalDice === 0 ||
-      this.state.playerTwoTotalDice === 0
-    ) {
-      this.setState({ gameOver: true });
-    }
+    // if (
+    //   this.state.playerOneTotalDice === 0 ||
+    //   this.state.playerTwoTotalDice === 0
+    // ) {
+    //   this.setState({ gameOver: true });
+    // }
   };
 
   handleDiceDraw = (props) => {
     const { diceBag } = this.state;
-    const { playerOne, playerTwo } = this.props;
+    const { playerOne, playerTwo, playerThree, playerFour } = this.props;
     let length = diceBag.length;
     let random = Math.floor(Math.random() * length);
 
@@ -128,6 +145,14 @@ class Dashboard extends Component {
     } else if (pulledDice == this.props.playerTwo.diceColor) {
       this.setState({
         playerTwoRemainingDice: this.state.playerTwoRemainingDice - 1,
+      });
+    } else if (pulledDice == this.props.playerThree.diceColor) {
+      this.setState({
+        playerThreeRemainingDice: this.state.playerThreeRemainingDice - 1,
+      });
+    } else if (pulledDice == this.props.playerFour.diceColor) {
+      this.setState({
+        playerFourRemainingDice: this.state.playerFourRemainingDice - 1,
       });
     }
     this.setState((prevState) => ({
@@ -165,6 +190,42 @@ class Dashboard extends Component {
 
       this.setState({
         playerTwoAmbushDice: this.state.playerTwoAmbushDice + 1,
+        drawDice: false,
+        playerOneUndo: false,
+        dotLast: false,
+      });
+    }
+  };
+
+  handleRemoveP3Dice = (props) => {
+    const { diceBag } = this.state;
+
+    if (this.state.playerThreeRemainingDice > 0) {
+      diceBag.splice([this.state.playerOneRemainingDice], 1);
+      this.setState({
+        playerThreeRemainingDice: this.state.playerThreeRemainingDice - 1,
+      });
+
+      this.setState({
+        playerThreeAmbushDice: this.state.playerThreeAmbushDice + 1,
+        drawDice: false,
+        playerOneUndo: false,
+        dotLast: false,
+      });
+    }
+  };
+
+  handleRemoveP4Dice = (props) => {
+    const { diceBag } = this.state;
+
+    if (this.state.playerFourRemainingDice > 0) {
+      diceBag.splice([this.state.playerOneRemainingDice], 1);
+      this.setState({
+        playerFourRemainingDice: this.state.playerFourRemainingDice - 1,
+      });
+
+      this.setState({
+        playerFourAmbushDice: this.state.playerFourAmbushDice + 1,
         drawDice: false,
         playerOneUndo: false,
         dotLast: false,
@@ -252,6 +313,8 @@ class Dashboard extends Component {
       pulledDice: "",
       playerTwoRemainingDice: this.state.playerTwoTotalDice,
       playerOneRemainingDice: this.state.playerOneTotalDice,
+      playerThreeRemainingDice: this.state.playerThreeTotalDice,
+      playerFourRemainingDice: this.state.playerFourTotalDice,
       drawDice: true,
     });
     this.handleDiceTotal();
@@ -274,10 +337,12 @@ class Dashboard extends Component {
   render() {
     console.log(this.state.diceBag);
     console.log(this.state.playerOneUndo);
-    // console.log(this.props.game.past)
+    console.log('pulled dice', this.state.pulledDice);
 
     return (
       <div>
+        {this.props.playerCount > 1 && this.props.playerCount != 4
+        ?
         <Segment.Group style={{ margin: "0" }} horizontal>
           <Segment>
             <h5 style={{ margin: "0" }}>
@@ -307,7 +372,9 @@ class Dashboard extends Component {
             )}
           </Segment>
         </Segment.Group>
-
+        :null}
+              {this.props.playerCount === 2
+        ?
         <Segment.Group style={{ margin: "0" }} horizontal>
           <Segment>
             <h5 style={{ margin: "0" }}>
@@ -337,6 +404,195 @@ class Dashboard extends Component {
             )}
           </Segment>
         </Segment.Group>
+        :null}
+
+        {/* *********************************************************************************************** */}
+        
+        {this.props.playerCount > 2 && this.props.playerCount != 4
+        ? <Segment.Group style={{ margin: "0" }} horizontal>
+        <Segment>
+          <h5 style={{ margin: "0" }}>
+            {this.props.playerTwo.name} total units:{" "}
+          </h5>
+          <h1
+            style={{
+              margin: "0",
+              color: `${this.props.playerTwo.diceColor}`,
+            }}
+          >
+            {this.state.playerTwoTotalDice}
+          </h1>
+        </Segment>
+        <Segment>
+          <h5 style={{ margin: "0" }}>
+            {this.props.playerTwo.name} dice in bag:
+          </h5>
+          {this.state.playerTwoRemainingDice ? (
+            <h1 style={{ margin: "0" }}>
+              {this.state.playerTwoRemainingDice}
+            </h1>
+          ) : (
+            <h1 style={{ margin: "0", color: "red" }}>
+              {this.state.playerTwoRemainingDice}
+            </h1>
+          )}
+        </Segment>
+      
+     
+           
+        <Segment>
+          <h5 style={{ margin: "0" }}>
+            {this.props.playerThree.name} total units:{" "}
+          </h5>
+          <h1
+            style={{
+              margin: "0",
+              color: `${this.props.playerThree.diceColor}`,
+            }}
+          >
+            {this.state.playerThreeTotalDice}
+          </h1>
+        </Segment>
+        <Segment>
+          <h5 style={{ margin: "0" }}>
+            {this.props.playerThree.name} dice in bag:
+          </h5>
+          {this.state.playerThreeRemainingDice > 0 ? (
+            <h1 style={{ margin: "0" }}>
+              {this.state.playerThreeRemainingDice}
+            </h1>
+          ) : (
+            <h1 style={{ margin: "0", color: "red" }}>
+              {this.state.playerThreeRemainingDice}
+            </h1>
+          )}
+        </Segment>
+      </Segment.Group>
+        : null}
+        {/* ****************************************************************************************** */}
+        
+        {this.props.playerCount === 4
+        ?
+        <Segment.Group style={{ margin: "0" }} horizontal>
+          <Segment>
+            <h5 style={{ margin: "0" }}>
+              {this.props.playerOne.name} total units:{" "}
+            </h5>
+            <h1
+              style={{
+                margin: "0",
+                color: `${this.props.playerOne.diceColor}`,
+              }}
+            >
+              {this.state.playerOneTotalDice}
+            </h1>
+          </Segment>
+          <Segment>
+            <h5 style={{ margin: "0" }}>
+              {this.props.playerOne.name} dice in bag:
+            </h5>
+            {this.state.playerOneRemainingDice ? (
+              <h1 style={{ margin: "0" }}>
+                {this.state.playerOneRemainingDice}
+              </h1>
+            ) : (
+              <h1 style={{ margin: "0", color: "red" }}>
+                {this.state.playerOneRemainingDice}
+              </h1>
+            )}
+          </Segment>
+
+          <Segment>
+            <h5 style={{ margin: "0" }}>
+              {this.props.playerTwo.name} total units:{" "}
+            </h5>
+            <h1
+              style={{
+                margin: "0",
+                color: `${this.props.playerTwo.diceColor}`,
+              }}
+            >
+              {this.state.playerTwoTotalDice}
+            </h1>
+          </Segment>
+          <Segment>
+            <h5 style={{ margin: "0" }}>
+              {this.props.playerTwo.name} dice in bag:
+            </h5>
+            {this.state.playerTwoRemainingDice ? (
+              <h1 style={{ margin: "0" }}>
+                {this.state.playerTwoRemainingDice}
+              </h1>
+            ) : (
+              <h1 style={{ margin: "0", color: "red" }}>
+                {this.state.playerTwoRemainingDice}
+              </h1>
+            )}
+          </Segment>
+        </Segment.Group>
+        : null}
+
+        {this.props.playerCount === 4
+        ?
+        <Segment.Group style={{ margin: "0" }} horizontal>
+          <Segment>
+            <h5 style={{ margin: "0" }}>
+              {this.props.playerThree.name} total units:{" "}
+            </h5>
+            <h1
+              style={{
+                margin: "0",
+                color: `${this.props.playerThree.diceColor}`,
+              }}
+            >
+              {this.state.playerThreeTotalDice}
+            </h1>
+          </Segment>
+          <Segment>
+            <h5 style={{ margin: "0" }}>
+              {this.props.playerThree.name} dice in bag:
+            </h5>
+            {this.state.playerThreeRemainingDice ? (
+              <h1 style={{ margin: "0" }}>
+                {this.state.playerThreeRemainingDice}
+              </h1>
+            ) : (
+              <h1 style={{ margin: "0", color: "red" }}>
+                {this.state.playerThreeRemainingDice}
+              </h1>
+            )}
+          </Segment>
+
+          <Segment>
+            <h5 style={{ margin: "0" }}>
+              {this.props.playerFour.name} total units:{" "}
+            </h5>
+            <h1
+              style={{
+                margin: "0",
+                color: `${this.props.playerFour.diceColor}`,
+              }}
+            >
+              {this.state.playerFourTotalDice}
+            </h1>
+          </Segment>
+          <Segment>
+            <h5 style={{ margin: "0" }}>
+              {this.props.playerFour.name} dice in bag:
+            </h5>
+            {this.state.playerFourRemainingDice ? (
+              <h1 style={{ margin: "0" }}>
+                {this.state.playerFourRemainingDice}
+              </h1>
+            ) : (
+              <h1 style={{ margin: "0", color: "red" }}>
+                {this.state.playerFourRemainingDice}
+              </h1>
+            )}
+          </Segment>
+        </Segment.Group>
+        : null}
+        {/* ************************************************************************************************** */}
 
         <div className="dice-container">
           {!this.state.pulledDice ? (
@@ -369,11 +625,33 @@ class Dashboard extends Component {
                   {this.props.playerOne.name}{" "}
                 </p>
               ) : (
+                null
+              )}
+              {this.state.pulledDice == this.props.playerTwo.diceColor ? (
                 <p style={{ fontSize: "19px" }}>
                   {" "}
                   {this.props.playerTwo.name}{" "}
                 </p>
+              ) : (
+                null
               )}
+              {this.state.pulledDice == this.props.playerThree.diceColor ? (
+                <p style={{ fontSize: "19px" }}>
+                  {" "}
+                  {this.props.playerThree.name}{" "}
+                </p>
+              ) : (
+                null
+              )}
+              {this.state.pulledDice == this.props.playerFour.diceColor ? (
+                <p style={{ fontSize: "19px" }}>
+                  {" "}
+                  {this.props.playerFour.name}{" "}
+                </p>
+              ) : (
+                null
+              )}
+
             </div>
           </Transition>
         </div>
@@ -469,6 +747,78 @@ class Dashboard extends Component {
               Dice on table Destroyed
             </Button>
           </Button.Group>
+          
+          {this.props.playerCount > 2
+          ?
+          <Button.Group vertical>
+            <Button
+              style={{ margin: "1px" }}
+              size="big"
+              color={this.props.playerThree.diceColor}
+              onClick={this.handleRemoveP2Dice}
+            >
+              {" "}
+              Ambush/Down/Snap
+              {this.state.playerThreeAmbushDice > 0
+                ? ` (${this.state.playerThreeAmbushDice})`
+                : null}
+            </Button>
+            <Button
+              style={{ margin: "1px" }}
+              size="big"
+              color={this.props.playerThree.diceColor}
+              onClick={this.handleP2DiBDestroyed}
+            >
+              {" "}
+              Dice in Bag Destroyed
+            </Button>
+            <Button
+              style={{ margin: "1px" }}
+              size="big"
+              color={this.props.playerThree.diceColor}
+              onClick={this.handleP2DoTDestroyed}
+            >
+              {" "}
+              Dice on table Destroyed
+            </Button>
+          </Button.Group>
+          : null}
+
+          {this.props.playerCount > 3
+          ?
+          <Button.Group vertical>
+            <Button
+              style={{ margin: "1px" }}
+              size="big"
+              color={this.props.playerFour.diceColor}
+              onClick={this.handleRemoveP2Dice}
+            >
+              {" "}
+              Ambush/Down/Snap
+              {this.state.playerFourAmbushDice > 0
+                ? ` (${this.state.playerFourAmbushDice})`
+                : null}
+            </Button>
+            <Button
+              style={{ margin: "1px" }}
+              size="big"
+              color={this.props.playerFour.diceColor}
+              onClick={this.handleP2DiBDestroyed}
+            >
+              {" "}
+              Dice in Bag Destroyed
+            </Button>
+            <Button
+              style={{ margin: "1px" }}
+              size="big"
+              color={this.props.playerFour.diceColor}
+              onClick={this.handleP2DoTDestroyed}
+            >
+              {" "}
+              Dice on table Destroyed
+            </Button>
+          </Button.Group>
+          : null}
 
           <Grid.Row columns={1}>
             <Button
