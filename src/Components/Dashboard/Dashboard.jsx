@@ -59,6 +59,12 @@ class Dashboard extends Component {
       playerTwoTotalDice,
       playerTwoRemainingDice,
       playerTwoAmbushDice,
+      playerThreeTotalDice,
+      playerThreeRemainingDice,
+      playerThreeAmbushDice,
+      playerFourTotalDice,
+      playerFourRemainingDice,
+      playerFourAmbushDice,
       diceBag,
     } = this.props.game.past[this.props.game.past.length - 1].game;
 
@@ -71,6 +77,12 @@ class Dashboard extends Component {
         playerTwoTotalDice: playerTwoTotalDice,
         playerTwoRemainingDice: playerTwoRemainingDice,
         playerTwoAmbushDice: playerTwoAmbushDice,
+        playerThreeTotalDice: playerThreeTotalDice, 
+        playerThreeRemainingDice: playerThreeRemainingDice, 
+        playerThreeAmbushDice: playerThreeAmbushDice, 
+        playerFourTotalDice: playerFourTotalDice,
+        playerFourRemainingDice: playerFourRemainingDice,
+        playerFourAmbushDice: playerFourAmbushDice, 
         drawDice: true,
       });
 
@@ -183,7 +195,7 @@ class Dashboard extends Component {
     const { diceBag } = this.state;
 
     if (this.state.playerTwoRemainingDice > 0) {
-      diceBag.splice([this.state.playerTwoRemainingDice], 1);
+      diceBag.splice([this.state.playerOneRemainingDice], 1);
       this.setState({
         playerTwoRemainingDice: this.state.playerTwoRemainingDice - 1,
       });
@@ -201,7 +213,7 @@ class Dashboard extends Component {
     const { diceBag } = this.state;
 
     if (this.state.playerThreeRemainingDice > 0) {
-      diceBag.splice([this.state.playerThreeRemainingDice], 1);
+      diceBag.splice([this.state.playerOneRemainingDice + this.state.playerTwoRemainingDice], 1);
       this.setState({
         playerThreeRemainingDice: this.state.playerThreeRemainingDice - 1,
       });
@@ -219,7 +231,7 @@ class Dashboard extends Component {
     const { diceBag } = this.state;
 
     if (this.state.playerFourRemainingDice > 0) {
-      diceBag.splice([this.state.playerFourRemainingDice], 1);
+      diceBag.splice([this.state.playerOneRemainingDice + this.state.playerTwoRemainingDice + this.state.playerThreeRemainingDice], 1);
       this.setState({
         playerFourRemainingDice: this.state.playerFourRemainingDice - 1,
       });
@@ -316,7 +328,7 @@ class Dashboard extends Component {
     } = this.state;
 
     if (playerThreeTotalDice > 0 && playerThreeRemainingDice > 0) {
-      diceBag.splice(0, 1);
+      diceBag.splice([this.state.playerOneRemainingDice + this.state.playerTwoRemainingDice], 1);
       this.setState({
         playerThreeRemainingDice: this.state.playerThreeRemainingDice - 1,
       });
@@ -355,7 +367,7 @@ class Dashboard extends Component {
     } = this.state;
 
     if (playerFourTotalDice > 0 && playerFourRemainingDice > 0) {
-      diceBag.splice(0, 1);
+      diceBag.splice([this.state.playerOneRemainingDice + this.state.playerTwoRemainingDice + this.state.playerThreeRemainingDice], 1);
       this.setState({
         playerFourRemainingDice: this.state.playerFourRemainingDice - 1,
       });
@@ -735,8 +747,9 @@ class Dashboard extends Component {
         </div>
 
         <h2>Turn: {this.state.turnNum}</h2>
+        {this.props.playerCount > 2 ? 
          <h2 style={{marginTop: 0}}>Total dice in bag: {this.state.diceBag.length}</h2>
-
+         :null}
         <Grid stackable centered>
           <Grid.Row columns={1}>
             {this.state.diceBag < 1 ? null : (
