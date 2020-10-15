@@ -183,7 +183,7 @@ class Dashboard extends Component {
     const { diceBag } = this.state;
 
     if (this.state.playerTwoRemainingDice > 0) {
-      diceBag.splice([this.state.playerOneRemainingDice], 1);
+      diceBag.splice([this.state.playerTwoRemainingDice], 1);
       this.setState({
         playerTwoRemainingDice: this.state.playerTwoRemainingDice - 1,
       });
@@ -201,7 +201,7 @@ class Dashboard extends Component {
     const { diceBag } = this.state;
 
     if (this.state.playerThreeRemainingDice > 0) {
-      diceBag.splice([this.state.playerOneRemainingDice], 1);
+      diceBag.splice([this.state.playerThreeRemainingDice], 1);
       this.setState({
         playerThreeRemainingDice: this.state.playerThreeRemainingDice - 1,
       });
@@ -219,7 +219,7 @@ class Dashboard extends Component {
     const { diceBag } = this.state;
 
     if (this.state.playerFourRemainingDice > 0) {
-      diceBag.splice([this.state.playerOneRemainingDice], 1);
+      diceBag.splice([this.state.playerFourRemainingDice], 1);
       this.setState({
         playerFourRemainingDice: this.state.playerFourRemainingDice - 1,
       });
@@ -302,6 +302,84 @@ class Dashboard extends Component {
         playerTwoTotalDice: playerTwoTotalDice - 1,
         drawDice: false,
         playerOneUndo: true,
+        dotLast: true,
+      });
+    }
+  };
+
+  handleP3DiBDestroyed = () => {
+    const {
+      diceBag,
+      playerThreeTotalDice,
+      playerThreeRemainingDice,
+      playerThreeAmbushDice,
+    } = this.state;
+
+    if (playerThreeTotalDice > 0 && playerThreeRemainingDice > 0) {
+      diceBag.splice(0, 1);
+      this.setState({
+        playerThreeRemainingDice: this.state.playerThreeRemainingDice - 1,
+      });
+      this.setState({
+        playerThreeTotalDice: playerThreeTotalDice - 1,
+        playerThreeRemainingDice: playerThreeRemainingDice - 1,
+        drawDice: false,
+        playerThreeUndo: true,
+        dotLast: false,
+      });
+    }
+  };
+
+  handleP3DoTDestroyed = () => {
+    const { diceBag, playerThreeTotalDice, playerThreeRemainingDice } = this.state;
+
+    if (
+      playerThreeTotalDice > 0 &&
+      playerThreeTotalDice != playerThreeRemainingDice
+    ) {
+      this.setState({
+        playerThreeTotalDice: playerThreeTotalDice - 1,
+        drawDice: false,
+        playerThreeUndo: true,
+        dotLast: true,
+      });
+    }
+  };
+
+  handleP4DiBDestroyed = () => {
+    const {
+      diceBag,
+      playerFourTotalDice,
+      playerFourRemainingDice,
+      playerFourAmbushDice,
+    } = this.state;
+
+    if (playerFourTotalDice > 0 && playerFourRemainingDice > 0) {
+      diceBag.splice(0, 1);
+      this.setState({
+        playerFourRemainingDice: this.state.playerFourRemainingDice - 1,
+      });
+      this.setState({
+        playerFourTotalDice: playerFourTotalDice - 1,
+        playerFourRemainingDice: playerFourRemainingDice - 1,
+        drawDice: false,
+        playerFourUndo: true,
+        dotLast: false,
+      });
+    }
+  };
+
+  handleP4DoTDestroyed = () => {
+    const { diceBag, playerFourTotalDice, playerFourRemainingDice } = this.state;
+
+    if (
+      playerFourTotalDice > 0 &&
+      playerFourTotalDice != playerFourRemainingDice
+    ) {
+      this.setState({
+        playerFourTotalDice: playerFourTotalDice - 1,
+        drawDice: false,
+        playerFourUndo: true,
         dotLast: true,
       });
     }
@@ -656,7 +734,8 @@ class Dashboard extends Component {
           </Transition>
         </div>
 
-        <h2>turn: {this.state.turnNum}</h2>
+        <h2>Turn: {this.state.turnNum}</h2>
+         <h2 style={{marginTop: 0}}>Total dice in bag: {this.state.diceBag.length}</h2>
 
         <Grid stackable centered>
           <Grid.Row columns={1}>
@@ -755,7 +834,7 @@ class Dashboard extends Component {
               style={{ margin: "1px" }}
               size="big"
               color={this.props.playerThree.diceColor}
-              onClick={this.handleRemoveP2Dice}
+              onClick={this.handleRemoveP3Dice}
             >
               {" "}
               Ambush/Down/Snap
@@ -767,7 +846,7 @@ class Dashboard extends Component {
               style={{ margin: "1px" }}
               size="big"
               color={this.props.playerThree.diceColor}
-              onClick={this.handleP2DiBDestroyed}
+              onClick={this.handleP3DiBDestroyed}
             >
               {" "}
               Dice in Bag Destroyed
@@ -776,7 +855,7 @@ class Dashboard extends Component {
               style={{ margin: "1px" }}
               size="big"
               color={this.props.playerThree.diceColor}
-              onClick={this.handleP2DoTDestroyed}
+              onClick={this.handleP3DoTDestroyed}
             >
               {" "}
               Dice on table Destroyed
@@ -791,7 +870,7 @@ class Dashboard extends Component {
               style={{ margin: "1px" }}
               size="big"
               color={this.props.playerFour.diceColor}
-              onClick={this.handleRemoveP2Dice}
+              onClick={this.handleRemoveP4Dice}
             >
               {" "}
               Ambush/Down/Snap
@@ -803,7 +882,7 @@ class Dashboard extends Component {
               style={{ margin: "1px" }}
               size="big"
               color={this.props.playerFour.diceColor}
-              onClick={this.handleP2DiBDestroyed}
+              onClick={this.handleP4DiBDestroyed}
             >
               {" "}
               Dice in Bag Destroyed
@@ -812,7 +891,7 @@ class Dashboard extends Component {
               style={{ margin: "1px" }}
               size="big"
               color={this.props.playerFour.diceColor}
-              onClick={this.handleP2DoTDestroyed}
+              onClick={this.handleP4DoTDestroyed}
             >
               {" "}
               Dice on table Destroyed

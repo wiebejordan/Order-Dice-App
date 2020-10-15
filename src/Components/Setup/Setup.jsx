@@ -272,6 +272,12 @@ const Setup = () => {
 
   const handlePlayerCount = (e, { value }) => {
     setPlayerCount(value);
+    if(value === 2){
+      setPlayerThree({name: '', diceNum: 0, diceColor: ''})
+      setPlayerFour({name: '', diceNum: 0, diceColor: ''})
+    } else if(value === 3){
+      setPlayerFour({name: '', diceNum: 0, diceColor: ''})
+    }
   };
 
   const onInputChangeOne = (e, result) => {
