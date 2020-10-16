@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Dropdown, Grid, Input, Segment, Button, Message} from "semantic-ui-react";
+import { Dropdown, Grid, Input, Segment, Button, Message, Container} from "semantic-ui-react";
 import Dashboard from "../Dashboard/Dashboard";
 
 const playerCountOptions = [
@@ -215,26 +215,26 @@ const diceNumOptions = [
 const mapStateToProps = (reduxState) => reduxState;
 
 const Setup = () => {
-  const [playerCount, setPlayerCount] = useState(4),
+  const [playerCount, setPlayerCount] = useState(2),
     [playerOne, setPlayerOne] = useState({
-      name: "one",
-      diceNum: 3,
-      diceColor: "orange",
+      name: "",
+      diceNum: null,
+      diceColor: "",
     }),
     [playerTwo, setPlayerTwo] = useState({
-      name: "two",
-      diceNum: 3,
-      diceColor: "black",
+      name: "",
+      diceNum: null,
+      diceColor: "",
     }),
     [playerThree, setPlayerThree] = useState({
-      name: "three",
-      diceNum: 3,
-      diceColor: "grey",
+      name: "",
+      diceNum: null,
+      diceColor: "",
     }),
     [playerFour, setPlayerFour] = useState({
-      name: "four",
-      diceNum: 3,
-      diceColor: "blue",
+      name: "",
+      diceNum: null,
+      diceColor: "",
     }),
     [startGame, setStartGame] = useState(false),
     [hideStart, setHideStart] = useState(false),
@@ -313,10 +313,11 @@ const Setup = () => {
   };
 
   return (
-    <div>
+    <div style={{backgroundColor: '#225316', height: '100%'}}>
       {startGame === false ?
-      <Grid centered>
-        <Grid.Column  width={4}>
+      
+      <Grid style={{width: '100vw'}} centered>
+        <Grid.Column  width={8}>
           <Segment>
       <h3>Select number of players</h3>
       
@@ -411,9 +412,9 @@ const Setup = () => {
               </Segment>
             </Grid.Column>
 
-            {playerCount > 2 ? (
+            {playerCount ? (
               <Grid.Column>
-                <Segment>
+                <Segment disabled={playerCount < 3}>
                 <h3>Player 3</h3>
                 <h4 style={{ margin: "0" }}>Player Name</h4>
                 <Input
@@ -451,9 +452,9 @@ const Setup = () => {
               </Grid.Column>
             ) : null}
 
-            {playerCount > 3 ? (
+            {playerCount ? (
               <Grid.Column>
-                <Segment>
+                <Segment disabled={playerCount < 4}>
                 <h3>Player 4</h3>
                 <h4 style={{ margin: "0" }}>Player Name</h4>
                 <Input
@@ -556,7 +557,7 @@ const Setup = () => {
       pFourError === false ? (
         <Button
           onClick={handleStartGame}
-          style={{ margin: "10px" }}
+          style={{ marginTop: '10px' }}
           size="huge"
         >
           Start Game
@@ -572,6 +573,12 @@ const Setup = () => {
           playerCount={playerCount}
         />
       )}
+
+      {playerCount === 2 ?
+      <div style={{height: '100px'}}>
+
+      </div>
+      : null}
     </div>
   );
 };

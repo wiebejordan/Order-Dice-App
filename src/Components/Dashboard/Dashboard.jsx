@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Button, Grid, Modal, Image, Header, Segment, Transition, Icon,} from "semantic-ui-react";
+import {Button, Grid, Modal, Image, Header, Segment, Transition, Icon, Container,} from "semantic-ui-react";
 import "../Dashboard/Dashboard.css";
 import { connect } from "react-redux";
 import { getGame, clearGame } from "../../redux/gameReducer";
@@ -443,7 +443,7 @@ class Dashboard extends Component {
     console.log('pulled dice', this.state.pulledDice);
 
     return (
-      <div>
+      <div style={{height: '100%'}} >
         {this.props.playerCount > 1 && this.props.playerCount != 4
         ?
         <Segment.Group style={{ margin: "0" }} horizontal>
@@ -512,9 +512,9 @@ class Dashboard extends Component {
         {/* *********************************************************************************************** */}
         
         {this.props.playerCount > 2 && this.props.playerCount != 4
-        ? <Segment.Group style={{ margin: "0" }} horizontal>
-        <Segment>
-          <h5 style={{ margin: "0" }}>
+        ? <Segment.Group style={{ margin: "0" }} basic centered horizontal>
+        <Segment basic>
+          <h5 style={{ margin: "0"}}>
             {this.props.playerTwo.name} total units:{" "}
           </h5>
           <h1
@@ -526,7 +526,7 @@ class Dashboard extends Component {
             {this.state.playerTwoTotalDice}
           </h1>
         </Segment>
-        <Segment>
+        <Segment basic>
           <h5 style={{ margin: "0" }}>
             {this.props.playerTwo.name} dice in bag:
           </h5>
@@ -573,24 +573,25 @@ class Dashboard extends Component {
       </Segment.Group>
         : null}
         {/* ****************************************************************************************** */}
-        
+        <Container>
         {this.props.playerCount === 4
         ?
-        <Segment.Group style={{ margin: "0" }} horizontal>
-          <Segment>
+        
+        <Segment.Group style={{ margin: "0" }} compact horizontal>
+          <Segment style={{color: this.props.playerOne.diceColor}}>
             <h5 style={{ margin: "0" }}>
               {this.props.playerOne.name} total units:{" "}
             </h5>
             <h1
               style={{
                 margin: "0",
-                color: `${this.props.playerOne.diceColor}`,
+                // color: `${this.props.playerOne.diceColor}`,
               }}
             >
               {this.state.playerOneTotalDice}
             </h1>
           </Segment>
-          <Segment>
+          <Segment style={{color: this.props.playerOne.diceColor}}>
             <h5 style={{ margin: "0" }}>
               {this.props.playerOne.name} dice in bag:
             </h5>
@@ -605,7 +606,7 @@ class Dashboard extends Component {
             )}
           </Segment>
 
-          <Segment>
+          <Segment style={{color: this.props.playerTwo.diceColor}}>
             <h5 style={{ margin: "0" }}>
               {this.props.playerTwo.name} total units:{" "}
             </h5>
@@ -618,7 +619,7 @@ class Dashboard extends Component {
               {this.state.playerTwoTotalDice}
             </h1>
           </Segment>
-          <Segment>
+          <Segment style={{color: this.props.playerTwo.diceColor}}>
             <h5 style={{ margin: "0" }}>
               {this.props.playerTwo.name} dice in bag:
             </h5>
@@ -638,7 +639,7 @@ class Dashboard extends Component {
         {this.props.playerCount === 4
         ?
         <Segment.Group style={{ margin: "0" }} horizontal>
-          <Segment>
+          <Segment style={{color: this.props.playerThree.diceColor}}>
             <h5 style={{ margin: "0" }}>
               {this.props.playerThree.name} total units:{" "}
             </h5>
@@ -651,7 +652,7 @@ class Dashboard extends Component {
               {this.state.playerThreeTotalDice}
             </h1>
           </Segment>
-          <Segment>
+          <Segment style={{color: this.props.playerThree.diceColor}}>
             <h5 style={{ margin: "0" }}>
               {this.props.playerThree.name} dice in bag:
             </h5>
@@ -666,7 +667,7 @@ class Dashboard extends Component {
             )}
           </Segment>
 
-          <Segment>
+          <Segment style={{color: this.props.playerFour.diceColor}}>
             <h5 style={{ margin: "0" }}>
               {this.props.playerFour.name} total units:{" "}
             </h5>
@@ -679,7 +680,7 @@ class Dashboard extends Component {
               {this.state.playerFourTotalDice}
             </h1>
           </Segment>
-          <Segment>
+          <Segment style={{color: this.props.playerFour.diceColor}}>
             <h5 style={{ margin: "0" }}>
               {this.props.playerFour.name} dice in bag:
             </h5>
@@ -695,12 +696,13 @@ class Dashboard extends Component {
           </Segment>
         </Segment.Group>
         : null}
+        </Container>
         {/* ************************************************************************************************** */}
 
         <div className="dice-container">
           {!this.state.pulledDice ? (
             <b
-              style={{ fontSize: "15px", color: "black", marginLeft: "100px" }}
+              style={{ fontSize: "15px", marginLeft: "100px" }}
             >
               Draw dice to begin turn {this.state.turnNum}!
             </b>
@@ -715,8 +717,8 @@ class Dashboard extends Component {
               className="dice"
               style={{
                 backgroundColor: `${this.state.pulledDice}`,
-                height: "100px",
-                width: "100px",
+                height: "125px",
+                width: "125px",
                 marginTop: "5px",
                 fontWeight: "bold",
                 borderRadius: "5px",
@@ -759,9 +761,9 @@ class Dashboard extends Component {
           </Transition>
         </div>
 
-        <h2>Turn: {this.state.turnNum}</h2>
+        <h2 style={{color: 'white'}}>Turn: {this.state.turnNum}</h2>
         {this.props.playerCount > 2 ? 
-         <h2 style={{marginTop: 0}}>Total dice in bag: {this.state.diceBag.length}</h2>
+         <h2 style={{marginTop: 0, color: 'white'}}>Total dice in bag: {this.state.diceBag.length}</h2>
          :null}
         <Grid stackable centered>
           <Grid.Row columns={1}>
@@ -927,7 +929,7 @@ class Dashboard extends Component {
 
           <Grid.Row columns={1}>
             <Button
-              style={{ marginTop: "10px" }}
+              style={{ margin: "10px" }}
               size="tiny"
               onClick={(e) => {
                 if (window.confirm("Are you sure you want to exit your game?"))
