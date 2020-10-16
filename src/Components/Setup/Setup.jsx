@@ -575,7 +575,7 @@ const Setup = () => {
       )}
 
       {playerCount === 2 ?
-      <div style={{height: '100px'}}>
+      <div style={{height: '125px'}}>
 
       </div>
       : null}
