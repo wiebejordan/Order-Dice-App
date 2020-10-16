@@ -322,7 +322,8 @@ const Setup = () => {
       <h3>Select number of players</h3>
       
       <Dropdown
-      placeholder='Select number of players'
+      placeholder='2'
+      defaultValue='2'
       fluid
       selection
       options={playerCountOptions}
