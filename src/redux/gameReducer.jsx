@@ -10,10 +10,16 @@ const initialState = {
     turnNum: 1,
     playerOneTotalDice: 0,
     playerOneRemainingDice: 0,
-    playerOneAmbushDice: 0, 
+    playerOneAmbushDice: 0,
     playerTwoTotalDice: 0,
     playerTwoRemainingDice: 0,
     playerTwoAmbushDice: 0,
+    playerThreeTotalDice: 0,
+    playerThreeRemainingDice: 0,
+    playerThreeAmbushDice: 0,
+    playerFourTotalDice: 0,
+    playerFourRemainingDice: 0,
+    playerFourAmbushDice: 0,
     gameOver: false,
     transition: true
   }

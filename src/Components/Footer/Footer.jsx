@@ -3,9 +3,10 @@ import {Icon, Button} from 'semantic-ui-react';
 
 const Footer = () => {
   return(
-    <div style={{marginTop: '30px'}}>
-      <p>Created by Jordan Wiebe 09/2020</p>
-      <Button size='mini'  href='http://baorderdiceapp.com/' icon>
+    <div style={{backgroundColor:'#1b4111', height: '125px'}}>
+      <p style={{color: 'white', paddingTop: '30px', textAlign: 'center'}}>Created by Jordan Wiebe 09/2020</p>
+      
+      <Button   size='mini'  href='http://baorderdiceapp.com/' icon>
     <Icon name='home' />
       
     </Button>
