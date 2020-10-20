@@ -983,6 +983,7 @@ class Dashboard extends Component {
             <Header centered>Communication Breakdown! </Header>
             <p>The first order dice of the game is <b style={{color: `${this.state.pulledDice}`, fontSize: '20px'}}>{this.state.pulledDice}</b>.</p>
             <p>Does this order dice belong to a French army, or any army with the Communication Breakdown rule?</p>
+            <p>If no, simply click the "leave dice in play" button</p>
             <p>If yes, the opponent may decide to return this order dice to the bag, or leave it in play.</p>
             <Button onClick={this.handleFrenchDice}>Return dice to bag</Button>
             <Button onClick={this.handleModalExit}>Leave dice in play</Button>
