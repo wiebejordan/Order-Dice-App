@@ -10,7 +10,7 @@ const Landing = () => {
         <Segment>
           {/* <Image  size='large' centered src='https://i.imgur.com/RQLDOlE.jpg'/> */}
         <p style={{fontSize: '15px'}}>
-          Welcome to the ScaleHistorySLC Order Dice App version 2.1 for Bolt Action! This app makes playing Bolt Action, Warlords of Erewhon, Konflict 47 and other games that use the dice bag mechanic even more Covid-19 friendly! 
+          Welcome to the ScaleHistorySLC Order Dice App version 2.2 for Bolt Action! This app makes playing Bolt Action, Warlords of Erewhon, Konflict 47 and other games that use the dice bag mechanic even more Covid-19 friendly! 
         </p>
 
         <p style={{fontSize: '15px'}}>
@@ -22,7 +22,7 @@ const Landing = () => {
         
         <p style={{fontSize: '12px'}}>
           
-          Version 2.1 features functionality for up to four players! You can now use this app for team games, four player free-for-all, or use a specific color of dice for special units or events! This app is being updated frequently, make sure to check back in often!  
+          Version 2.2 features functionality for up to four players! You can now use this app for team games, four player free-for-all, or use a specific color of dice for special units or events! Also, the Communication Breakdown special rule is now functional within the app. Simply check the box during setup, and the app will do the rest! This app is being updated frequently, make sure to check back in often!  
         </p>
         </Message>
 
