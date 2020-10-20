@@ -451,7 +451,7 @@ class Dashboard extends Component {
       this.setState({playerFourRemainingDice: playerFourRemainingDice + 1 })
     }
 
-    this.setState({isFrench: false, firstDice: false});
+    this.setState({isFrench: false, firstDice: false, pulledDice: ''});
   }
 
   handleGameOver = () => {
