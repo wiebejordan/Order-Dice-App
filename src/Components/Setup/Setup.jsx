@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Dropdown, Grid, Input, Segment, Button, Message, Container} from "semantic-ui-react";
+import { Dropdown, Grid, Input, Segment, Button, Message, Container, Checkbox, Modal, Header} from "semantic-ui-react";
 import Dashboard from "../Dashboard/Dashboard";
+import '../Setup/Setup.css'
 
 const playerCountOptions = [
   {
@@ -217,14 +218,14 @@ const mapStateToProps = (reduxState) => reduxState;
 const Setup = () => {
   const [playerCount, setPlayerCount] = useState(2),
     [playerOne, setPlayerOne] = useState({
-      name: "",
-      diceNum: null,
-      diceColor: "",
+      name: "one",
+      diceNum: 2,
+      diceColor: "blue",
     }),
     [playerTwo, setPlayerTwo] = useState({
-      name: "",
-      diceNum: null,
-      diceColor: "",
+      name: "two",
+      diceNum: 2,
+      diceColor: "olive",
     }),
     [playerThree, setPlayerThree] = useState({
       name: "",
@@ -241,7 +242,9 @@ const Setup = () => {
     [pOneError, setPOneError] = useState(false),
     [pTwoError, setPTwoError] = useState(false),
     [pThreeError, setPThreeError] = useState(false),
-    [pFourError, setPFourError] = useState(false);
+    [pFourError, setPFourError] = useState(false),
+    [isFrench, setIsFrench] = useState(false),
+    [frenchModal, setFrenchModal] = useState(false);
 
   useEffect(() => {
     if (playerOne.name.length > 10) {
@@ -302,6 +305,16 @@ const Setup = () => {
 
     setPlayerFour({ ...playerFour, [name]: value });
   };
+
+  const handleFrench = () => {
+    
+    setIsFrench(!isFrench)
+    
+  }
+
+  const handleFrenchModal = () => {
+    setFrenchModal(!frenchModal)
+  }
 
   const handleStartGame = () => {
     if (startGame === false) {
@@ -496,6 +509,20 @@ const Setup = () => {
         </Grid>
       ) : null}
 
+        {startGame === false ? 
+        <Container>
+        <Grid centered>
+          <Grid.Row>
+        <Checkbox onChange={handleFrench}/> 
+        <p style={{color: 'white', marginLeft: '5px', marginRight: '5px'}}>Check if a French army is being fielded.  
+        </p> 
+        <p className='frenchExplain' style={{color: 'cyan'}} onClick={handleFrenchModal}>Why does this matter?</p>
+        </Grid.Row>
+
+        </Grid>
+        </Container>
+      :null}
+
       {playerCount === 2 &&
       playerOne.name &&
       playerOne.diceNum > 0 &&
@@ -506,13 +533,15 @@ const Setup = () => {
       hideStart === false &&
       pOneError === false &&
       pTwoError === false ? (
+
         <Button
           onClick={handleStartGame}
-          style={{ margin: "10px" }}
+          style={{ marginTop: '10px' }}
           size="huge"
         >
           Start Game
         </Button>
+        
       ) : null}
 
       {playerCount === 3 &&
@@ -556,6 +585,7 @@ const Setup = () => {
       pTwoError === false &&
       pThreeError === false  && 
       pFourError === false ? (
+        
         <Button
           onClick={handleStartGame}
           style={{ marginTop: '10px' }}
@@ -563,7 +593,36 @@ const Setup = () => {
         >
           Start Game
         </Button>
+        
       ) : null}
+
+      
+
+<Modal
+      onClose={() => setFrenchModal(false)}
+      onOpen={() => setFrenchModal(true)}
+      open={frenchModal}
+      // trigger={frenchModal === true}
+    >
+      <Modal.Header>Communication Breakdown!</Modal.Header>
+      <Modal.Content>
+        <Modal.Description>
+          <p>
+            Per page 10 of the Armies of France and the Allies, if the first Order Die of the game that is drawn belongs to the 
+            French player, his or her opponent may decide that the dice is put back into the bag and a new Order Die is drawn instead.
+          </p>
+          <p>If one or more players is playing France, or another army that uses this special rule, make sure the box is checked to allow this option to be available to their opponent(s) once the game is started.</p>
+        </Modal.Description>
+      </Modal.Content>
+      <Modal.Actions>
+        
+        <Button
+          content="Got it!"
+          onClick={() => setFrenchModal(false)}
+          positive
+        />
+      </Modal.Actions>
+    </Modal>
 
       {startGame === false ? null : (
         <Dashboard
@@ -572,6 +631,7 @@ const Setup = () => {
           playerThree={playerThree}
           playerFour={playerFour}
           playerCount={playerCount}
+          isFrench={isFrench}
         />
       )}
 

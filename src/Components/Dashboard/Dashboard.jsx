@@ -30,6 +30,7 @@ class Dashboard extends Component {
       playerFourTotalDice: this.props.playerFour.diceNum,
       playerFourRemainingDice: this.props.playerFour.diceNum,
       playerFourAmbushDice: 0,
+      isFrench: this.props.isFrench,
       gameOver: false,
       transition: true,
       transition2: true,
