@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Button, Grid, Modal, Image, Header, Segment, Transition, Icon, Container,} from "semantic-ui-react";
+import {Button, Grid, Modal, Image, Header, Segment, Transition, Icon, Container} from "semantic-ui-react";
 import "../Dashboard/Dashboard.css";
 import { connect } from "react-redux";
 import { getGame, clearGame } from "../../redux/gameReducer";
@@ -31,6 +31,7 @@ class Dashboard extends Component {
       playerFourRemainingDice: this.props.playerFour.diceNum,
       playerFourAmbushDice: 0,
       isFrench: this.props.isFrench,
+      firstDice: false,
       gameOver: false,
       transition: true,
       transition2: true,
@@ -49,6 +50,8 @@ class Dashboard extends Component {
     if (prevState !== this.state) {
       this.props.getGame(this.state);
     }
+
+    
   };
 
   handleUndo = () => {
@@ -184,6 +187,10 @@ class Dashboard extends Component {
       transition: !prevState.transition,
       drawDice: true,
     }));
+
+    if(this.state.diceBag.length === this.state.totalDice-1 && this.state.isFrench === true){
+      this.setState({firstDice: true, isFrench: false})
+    }
   };
 
   handleRemoveP1Dice = (props) => {
@@ -424,6 +431,29 @@ class Dashboard extends Component {
     this.handleDiceTotal();
   };
 
+  handleFrenchDice = () => {
+    const {diceBag, pulledDice, playerOneRemainingDice, playerTwoRemainingDice, playerThreeRemainingDice, playerFourRemainingDice} = this.state;
+
+    if(pulledDice == this.props.playerOne.diceColor){
+      diceBag.unshift(this.props.playerOne.diceColor)
+      this.setState({playerOneRemainingDice: playerOneRemainingDice + 1 })
+    } 
+    else if(pulledDice == this.props.playerTwo.diceColor){
+      diceBag.splice([playerOneRemainingDice + playerTwoRemainingDice], 0, this.props.playerTwo.diceColor);
+      this.setState({playerTwoRemainingDice: playerTwoRemainingDice + 1 })
+    }
+    else if(pulledDice == this.props.playerThree.diceColor){
+      diceBag.splice([playerOneRemainingDice + playerTwoRemainingDice + playerThreeRemainingDice], 0, this.props.playerThree.diceColor);
+      this.setState({playerThreeRemainingDice: playerThreeRemainingDice + 1 })
+    }
+    else if(pulledDice == this.props.playerFour.diceColor){
+      diceBag.splice([playerOneRemainingDice + playerTwoRemainingDice + playerThreeRemainingDice + playerFourRemainingDice], 0, this.props.playerFour.diceColor);
+      this.setState({playerFourRemainingDice: playerFourRemainingDice + 1 })
+    }
+
+    this.setState({isFrench: false, firstDice: false});
+  }
+
   handleGameOver = () => {
     if (
       this.state.playerOneTotalDice === 0 ||
@@ -438,9 +468,15 @@ class Dashboard extends Component {
     this.props.clearGame();
   };
 
+  handleModalExit = () => {
+    this.setState({firstDice: false})
+  }
+
+
   render() {
     console.log(this.state.diceBag);
-    console.log(this.state.whoUndo);
+    console.log(this.state.totalDice);
+    console.log(this.state.diceRemaining);
     console.log('pulled dice', this.state.pulledDice);
 
     return (
@@ -941,6 +977,17 @@ class Dashboard extends Component {
             </Button>
           </Grid.Row>
         </Grid>
+
+        <Modal size='tiny' dimmer='inverted' open={this.state.firstDice === true}>
+          <Modal.Content centered>
+            <Header centered>Communication Breakdown! </Header>
+            <p>The first order dice of the game is <b style={{color: `${this.state.pulledDice}`, fontSize: '20px'}}>{this.state.pulledDice}</b>.</p>
+            <p>Does this order dice belong to a French army, or any army with the Communication Breakdown rule?</p>
+            <p>If yes, the opponent may decide to return this order dice to the bag, or leave it in play.</p>
+            <Button onClick={this.handleFrenchDice}>Return dice to bag</Button>
+            <Button onClick={this.handleModalExit}>Leave dice in play</Button>
+          </Modal.Content>
+        </Modal>
 
         <Modal open={this.state.gameOver === true}>
           <Modal.Content centered>
