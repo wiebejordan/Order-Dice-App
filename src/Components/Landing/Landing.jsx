@@ -18,7 +18,7 @@ const Landing = () => {
         </p>
 
         <Message warning>
-        <Message.Header> 10/15/2020 Version 2.1 New Site Features</Message.Header>
+        <Message.Header> 10/15/2020 Version 2.2 New Site Features</Message.Header>
         
         <p style={{fontSize: '12px'}}>
           
