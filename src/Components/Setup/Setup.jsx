@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Dropdown, Grid, Input, Segment, Button, Message, Container, Checkbox, Modal, Header} from "semantic-ui-react";
+import {
+  Dropdown,
+  Grid,
+  Input,
+  Segment,
+  Button,
+  Message,
+  Container,
+  Checkbox,
+  Modal,
+  Header,
+} from "semantic-ui-react";
 import Dashboard from "../Dashboard/Dashboard";
-import '../Setup/Setup.css'
+import "../Setup/Setup.css";
 
 const playerCountOptions = [
   {
@@ -270,16 +281,15 @@ const Setup = () => {
     } else {
       setPFourError(false);
     }
-    
   });
 
   const handlePlayerCount = (e, { value }) => {
     setPlayerCount(value);
-    if(value === 2){
-      setPlayerThree({name: '', diceNum: 0, diceColor: ''})
-      setPlayerFour({name: '', diceNum: 0, diceColor: ''})
-    } else if(value === 3){
-      setPlayerFour({name: '', diceNum: 0, diceColor: ''})
+    if (value === 2) {
+      setPlayerThree({ name: "", diceNum: 0, diceColor: "" });
+      setPlayerFour({ name: "", diceNum: 0, diceColor: "" });
+    } else if (value === 3) {
+      setPlayerFour({ name: "", diceNum: 0, diceColor: "" });
     }
   };
 
@@ -307,14 +317,12 @@ const Setup = () => {
   };
 
   const handleFrench = () => {
-    
-    setIsFrench(!isFrench)
-    
-  }
+    setIsFrench(!isFrench);
+  };
 
   const handleFrenchModal = () => {
-    setFrenchModal(!frenchModal)
-  }
+    setFrenchModal(!frenchModal);
+  };
 
   const handleStartGame = () => {
     if (startGame === false) {
@@ -326,26 +334,25 @@ const Setup = () => {
   };
 
   return (
-    <div style={{backgroundColor: '#225316', height: '100%'}}>
-      {startGame === false ?
-      
-      <Grid style={{width: '100vw'}} centered>
-        <Grid.Column  width={8}>
-          <Segment>
-      <h3>Select number of players</h3>
-      
-      <Dropdown
-      placeholder='2'
-      defaultValue='2'
-      fluid
-      selection
-      options={playerCountOptions}
-      onChange = {handlePlayerCount}
-      />
-      </Segment> 
-      </Grid.Column>
-      </Grid>
-      :null}
+    <div style={{ backgroundColor: "#225316", height: "100%" }}>
+      {startGame === false ? (
+        <Grid style={{ width: "100vw" }} centered>
+          <Grid.Column width={8}>
+            <Segment>
+              <h3>Select number of players</h3>
+
+              <Dropdown
+                placeholder="2"
+                defaultValue="2"
+                fluid
+                selection
+                options={playerCountOptions}
+                onChange={handlePlayerCount}
+              />
+            </Segment>
+          </Grid.Column>
+        </Grid>
+      ) : null}
 
       {startGame === false ? (
         <Grid stackable columns={2}>
@@ -429,99 +436,111 @@ const Setup = () => {
             {playerCount ? (
               <Grid.Column>
                 <Segment disabled={playerCount < 3}>
-                <h3>Player 3</h3>
-                <h4 style={{ margin: "0" }}>Player Name</h4>
-                <Input
-                  onChange={(e) => onInputChangeThree(e)}
-                  placeholder="enter player name"
-                  name="name"
-                  value={playerThree.name}
-                />
-                {pThreeError === true ? (
-                  <Message negative>
-                    <p>Name must be less than 10 characters</p>
-                  </Message>
-                ) : null}
-                <h4 style={{ margin: "0" }}>Number of Order Dice</h4>
-                <Dropdown
-                  placeholder="number of dice"
-                  name="diceNum"
-                  value={playerThree.diceNum}
-                  onChange={onInputChangeThree}
-                  fluid
-                  selection
-                  options={diceNumOptions}
-                />
-                <h4 style={{ margin: "0" }}>Order Dice Color</h4>
-                <Dropdown
-                  placeholder="order dice color"
-                  name="diceColor"
-                  value={playerThree.diceColor}
-                  onChange={onInputChangeThree}
-                  fluid
-                  selection
-                  options={diceColorOptions}
-                />
-              </Segment>
+                  <h3>Player 3</h3>
+                  <h4 style={{ margin: "0" }}>Player Name</h4>
+                  <Input
+                    onChange={(e) => onInputChangeThree(e)}
+                    placeholder="enter player name"
+                    name="name"
+                    value={playerThree.name}
+                  />
+                  {pThreeError === true ? (
+                    <Message negative>
+                      <p>Name must be less than 10 characters</p>
+                    </Message>
+                  ) : null}
+                  <h4 style={{ margin: "0" }}>Number of Order Dice</h4>
+                  <Dropdown
+                    placeholder="number of dice"
+                    name="diceNum"
+                    value={playerThree.diceNum}
+                    onChange={onInputChangeThree}
+                    fluid
+                    selection
+                    options={diceNumOptions}
+                  />
+                  <h4 style={{ margin: "0" }}>Order Dice Color</h4>
+                  <Dropdown
+                    placeholder="order dice color"
+                    name="diceColor"
+                    value={playerThree.diceColor}
+                    onChange={onInputChangeThree}
+                    fluid
+                    selection
+                    options={diceColorOptions}
+                  />
+                </Segment>
               </Grid.Column>
             ) : null}
 
             {playerCount ? (
               <Grid.Column>
                 <Segment disabled={playerCount < 4}>
-                <h3>Player 4</h3>
-                <h4 style={{ margin: "0" }}>Player Name</h4>
-                <Input
-                  onChange={(e) => onInputChangeFour(e)}
-                  placeholder="enter player name"
-                  name="name"
-                  value={playerFour.name}
-                />
-                {pFourError === true ? (
-                  <Message negative>
-                    <p>Name must be less than 10 characters</p>
-                  </Message>
-                ) : null}
-                <h4 style={{ margin: "0" }}>Number of Order Dice</h4>
-                <Dropdown
-                  placeholder="number of dice"
-                  name="diceNum"
-                  value={playerFour.diceNum}
-                  onChange={onInputChangeFour}
-                  fluid
-                  selection
-                  options={diceNumOptions}
-                />
-                <h4 style={{ margin: "0" }}>Order Dice Color</h4>
-                <Dropdown
-                  placeholder="order dice color"
-                  name="diceColor"
-                  value={playerFour.diceColor}
-                  onChange={onInputChangeFour}
-                  fluid
-                  selection
-                  options={diceColorOptions}
-                />
-              </Segment>
+                  <h3>Player 4</h3>
+                  <h4 style={{ margin: "0" }}>Player Name</h4>
+                  <Input
+                    onChange={(e) => onInputChangeFour(e)}
+                    placeholder="enter player name"
+                    name="name"
+                    value={playerFour.name}
+                  />
+                  {pFourError === true ? (
+                    <Message negative>
+                      <p>Name must be less than 10 characters</p>
+                    </Message>
+                  ) : null}
+                  <h4 style={{ margin: "0" }}>Number of Order Dice</h4>
+                  <Dropdown
+                    placeholder="number of dice"
+                    name="diceNum"
+                    value={playerFour.diceNum}
+                    onChange={onInputChangeFour}
+                    fluid
+                    selection
+                    options={diceNumOptions}
+                  />
+                  <h4 style={{ margin: "0" }}>Order Dice Color</h4>
+                  <Dropdown
+                    placeholder="order dice color"
+                    name="diceColor"
+                    value={playerFour.diceColor}
+                    onChange={onInputChangeFour}
+                    fluid
+                    selection
+                    options={diceColorOptions}
+                  />
+                </Segment>
               </Grid.Column>
             ) : null}
           </Grid.Row>
         </Grid>
       ) : null}
 
-        {startGame === false ? 
+      {startGame === false ? (
         <Container>
-        <Grid centered>
-          <Grid.Row>
-        <Checkbox onChange={handleFrench}/> 
-        <p style={{color: 'white', marginLeft: '5px', marginRight: '5px'}}>Check if a French army is being fielded.  
-        </p> 
-        <p className='frenchExplain' style={{color: 'cyan'}} onClick={handleFrenchModal}>Why does this matter?</p>
-        </Grid.Row>
-
-        </Grid>
+          <Grid centered>
+            <Grid.Row>
+              <Checkbox onChange={handleFrench} />
+              <p
+                style={{
+                  color: "white",
+                  marginLeft: "5px",
+                  marginRight: "5px",
+                }}
+              >
+                Check if a French army is being fielded.
+              </p>
+              <p
+                className="frenchExplain"
+                style={{ color: "cyan" }}
+                onClick={handleFrenchModal}
+              >
+                Why does this matter?
+              </p>
+            </Grid.Row>
+          </Grid>
         </Container>
-      :null}
+      ) : null}
 
       {playerCount === 2 &&
       playerOne.name &&
@@ -533,15 +552,13 @@ const Setup = () => {
       hideStart === false &&
       pOneError === false &&
       pTwoError === false ? (
-
         <Button
           onClick={handleStartGame}
-          style={{ marginTop: '10px' }}
+          style={{ marginTop: "10px" }}
           size="huge"
         >
           Start Game
         </Button>
-        
       ) : null}
 
       {playerCount === 3 &&
@@ -557,7 +574,7 @@ const Setup = () => {
       hideStart === false &&
       pOneError === false &&
       pTwoError === false &&
-      pThreeError === false ?(
+      pThreeError === false ? (
         <Button
           onClick={handleStartGame}
           style={{ margin: "10px" }}
@@ -567,7 +584,7 @@ const Setup = () => {
         </Button>
       ) : null}
 
-    {playerCount === 4 &&
+      {playerCount === 4 &&
       playerOne.name &&
       playerOne.diceNum > 0 &&
       playerOne.diceColor &&
@@ -583,46 +600,48 @@ const Setup = () => {
       hideStart === false &&
       pOneError === false &&
       pTwoError === false &&
-      pThreeError === false  && 
+      pThreeError === false &&
       pFourError === false ? (
-        
         <Button
           onClick={handleStartGame}
-          style={{ marginTop: '10px' }}
+          style={{ marginTop: "10px" }}
           size="huge"
         >
           Start Game
         </Button>
-        
       ) : null}
 
-      
-
-<Modal
-      onClose={() => setFrenchModal(false)}
-      onOpen={() => setFrenchModal(true)}
-      open={frenchModal}
-      // trigger={frenchModal === true}
-    >
-      <Modal.Header>Communication Breakdown!</Modal.Header>
-      <Modal.Content>
-        <Modal.Description>
-          <p>
-            Per page 10 of the Armies of France and the Allies, if the first Order Die of the game that is drawn belongs to the 
-            French player, his or her opponent may decide that the dice is put back into the bag and a new Order Die is drawn instead.
-          </p>
-          <p>If one or more players is playing France, or another army that uses this special rule, make sure the box is checked to allow this option to be available to their opponent(s) once the game is started.</p>
-        </Modal.Description>
-      </Modal.Content>
-      <Modal.Actions>
-        
-        <Button
-          content="Got it!"
-          onClick={() => setFrenchModal(false)}
-          positive
-        />
-      </Modal.Actions>
-    </Modal>
+      <Modal
+        onClose={() => setFrenchModal(false)}
+        onOpen={() => setFrenchModal(true)}
+        open={frenchModal}
+        // trigger={frenchModal === true}
+      >
+        <Modal.Header>Communication Breakdown!</Modal.Header>
+        <Modal.Content>
+          <Modal.Description>
+            <p>
+              Per page 10 of the Armies of France and the Allies, if the first
+              Order Die of the game that is drawn belongs to the French player,
+              his or her opponent may decide that the dice is put back into the
+              bag and a new Order Die is drawn instead.
+            </p>
+            <p>
+              If one or more players is playing France, or another army that
+              uses this special rule, make sure the box is checked to allow this
+              option to be available to their opponent(s) once the game is
+              started.
+            </p>
+          </Modal.Description>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button
+            content="Got it!"
+            onClick={() => setFrenchModal(false)}
+            positive
+          />
+        </Modal.Actions>
+      </Modal>
 
       {startGame === false ? null : (
         <Dashboard
@@ -635,11 +654,7 @@ const Setup = () => {
         />
       )}
 
-      {playerCount === 2 ?
-      <div style={{height: '125px'}}>
-
-      </div>
-      : null}
+      {playerCount === 2 ? <div style={{ height: "125px" }}></div> : null}
     </div>
   );
 };
