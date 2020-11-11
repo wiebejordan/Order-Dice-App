@@ -6,7 +6,7 @@ import "../Landing/Landing.css";
 const Landing = () => {
   return (
     <div>
-      <Container textAlign="center">
+      <Container textAlign="left">
         <Segment>
           {/* <Image  size='large' centered src='https://i.imgur.com/RQLDOlE.jpg'/> */}
           <p style={{ fontSize: "15px" }}>
