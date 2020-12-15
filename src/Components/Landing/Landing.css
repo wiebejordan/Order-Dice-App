@@ -1,3 +1,10 @@
+.landing-container{
+  background-image: url(https://i.imgur.com/UNyQcQH.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 
 @media(max-width: 536px){
   iframe{

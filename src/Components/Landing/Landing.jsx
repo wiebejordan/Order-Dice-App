@@ -5,7 +5,7 @@ import "../Landing/Landing.css";
 
 const Landing = () => {
   return (
-    <div>
+    <div className='landing-container'>
       <Container textAlign="left">
         <Segment>
           {/* <Image  size='large' centered src='https://i.imgur.com/RQLDOlE.jpg'/> */}
@@ -52,12 +52,14 @@ const Landing = () => {
         </Segment>
       </Container>
 
-      <Container>
+      <Container >
+        
         <Link to="/setup">
-          <Button size="huge" color="green" style={{ margin: "10px" }}>
+          <Button size="massive" color='green' style={{ margin: "10px" }}>
             Begin
           </Button>
         </Link>
+        
       </Container>
 
       <iframe
@@ -68,6 +70,8 @@ const Landing = () => {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
       ></iframe>
+
+      {/* <img src='https://i.imgur.com/A3BYOoI.jpg'/> */}
     </div>
   );
 };
